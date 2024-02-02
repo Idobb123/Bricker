@@ -16,16 +16,36 @@ import java.awt.*;
 import java.util.Random;
 
 public class BrickerGameManager extends GameManager {
+    private static float WALL_WIDTH = 6;
+    private static float BRICK_SPACE = 2;
+    private static float BRICK_HEIGHT = 15;
+    private int bricksPerRow;
+    private int numberOfRows;
 
     private static final float BALL_SPEED = 200;
 
     public BrickerGameManager(String windowTitle, Vector2 windowDimensions) {
         super(windowTitle, windowDimensions);
+        this.bricksPerRow= 8;
+        this.numberOfRows = 7;
+    }
+    public BrickerGameManager(String windowTitle, Vector2 windowDimensions, int bricksPerRow, int numberOfRows) {
+        super(windowTitle, windowDimensions);
+        this.bricksPerRow= bricksPerRow;
+        this.numberOfRows = numberOfRows;
     }
 
     public static void main(String[] args) {
         BrickerGameManager gameManager = new BrickerGameManager("Bricker", new Vector2(700, 500));
         gameManager.run();
+    }
+
+    /**
+     * removes the given game object from the game
+     * @param object the given game object
+     */
+    public void deleteObject (GameObject object) {
+            this.gameObjects().removeGameObject(object);
     }
 
     @Override
@@ -41,10 +61,9 @@ public class BrickerGameManager extends GameManager {
         buildWalls(windowDimensions);
         // create the background
         createBackground(windowDimensions, imageReader);
+        // Create the bricks
+        createBricks(imageReader, windowDimensions);
 
-        Renderable brickImage = imageReader.readImage("assets/brick.png", false);
-        Brick brick = new Brick(Vector2.ZERO, new Vector2(windowDimensions.x(), 15), brickImage, new BasicCollisionStrategy());
-        this.gameObjects().addGameObject(brick); // TODO -> think about which layer the brick belongs to
     }
 
     private void createPaddle(ImageReader imageReader, UserInputListener inputListener, Vector2 windowDimensions) {
@@ -73,7 +92,7 @@ public class BrickerGameManager extends GameManager {
     }
 
     private void buildWalls(Vector2 windowDimensions) {
-        GameObject leftWall = new GameObject(Vector2.ZERO, new Vector2(6, windowDimensions.y()), new RectangleRenderable(Color.CYAN));
+        GameObject leftWall = new GameObject(Vector2.ZERO, new Vector2(WALL_WIDTH, windowDimensions.y()), new RectangleRenderable(Color.CYAN));
         GameObject rightWall = new GameObject(new Vector2(windowDimensions.x() - 6, 0), new Vector2(6, windowDimensions.y()), new RectangleRenderable(Color.CYAN));
         GameObject upperWall = new GameObject(Vector2.ZERO, new Vector2(windowDimensions.x(), 6), new RectangleRenderable(Color.CYAN));
         this.gameObjects().addGameObject(leftWall);
@@ -87,5 +106,22 @@ public class BrickerGameManager extends GameManager {
         // background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         this.gameObjects().addGameObject(background, Layer.BACKGROUND);
 
+    }
+
+    private void createBricks(ImageReader imageReader, Vector2 windowDimensions) {
+        Renderable brickImage = imageReader.readImage("assets/brick.png", false);
+        Vector2 curBrickLocation;// = new Vector2(WALL_WIDTH +BRICK_SPACE, WALL_WIDTH + BRICK_SPACE);
+//        System.out.println(curBrickLocation);
+        float brickWidth = (windowDimensions.x() - 2*(WALL_WIDTH+BRICK_SPACE)) / bricksPerRow - BRICK_SPACE;
+        for (int i = 0; i < numberOfRows; i++) {
+            for (int j = 0; j <bricksPerRow; j++) {
+                curBrickLocation = new Vector2(WALL_WIDTH + BRICK_SPACE + (brickWidth + BRICK_SPACE) * j,
+                        WALL_WIDTH + BRICK_SPACE + (BRICK_HEIGHT + BRICK_SPACE) * i);
+                Brick brick = new Brick(curBrickLocation, new Vector2(brickWidth, BRICK_HEIGHT),
+                        brickImage, new BasicCollisionStrategy(this));
+                this.gameObjects().addGameObject(brick); // TODO -> think about which layer the brick belongs to
+
+            }
+        }
     }
 }
