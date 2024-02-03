@@ -7,7 +7,6 @@ public class BasicCollisionStrategy implements CollisionStrategy{
     private BrickerGameManager brickerGameManager;
 
     public BasicCollisionStrategy(BrickerGameManager brickerGameManager) {
-
         this.brickerGameManager = brickerGameManager;
     }
     @Override

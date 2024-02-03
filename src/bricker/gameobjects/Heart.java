@@ -1,16 +1,14 @@
 package bricker.gameobjects;
 
-import bricker.brick_strategies.CollisionStrategy;
+import bricker.BrickerGameManager;
+import danogl.GameManager;
 import danogl.GameObject;
-import danogl.collisions.Collision;
 import danogl.gui.rendering.Renderable;
-import danogl.util.Counter;
 import danogl.util.Vector2;
 
-public class Brick extends GameObject {
+public class Heart extends GameObject {
 
-    private CollisionStrategy collisionStrategy;
-    private final Counter hitCounter;
+    private final BrickerGameManager brickerGameManager;
 
     /**
      * Construct a new GameObject instance.
@@ -21,19 +19,19 @@ public class Brick extends GameObject {
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
      */
-    public Brick(Vector2 topLeftCorner,
+    public Heart(Vector2 topLeftCorner,
                  Vector2 dimensions,
                  Renderable renderable,
-                 CollisionStrategy collisionStrategy,
-                 Counter hitCounter) {
+                 BrickerGameManager brickerGameManager, int initialStrikes) {
         super(topLeftCorner, dimensions, renderable);
-        this.collisionStrategy = collisionStrategy;
-        this.hitCounter = hitCounter;
+        this.brickerGameManager = brickerGameManager;
     }
 
-    @Override
-    public void onCollisionEnter(GameObject other, Collision collision) {
-        collisionStrategy.onCollision(this,other);
-        hitCounter.decrement();
+    public void deleteHeart() {
+        brickerGameManager.deleteObject(this);
     }
+
+
+
+
 }
