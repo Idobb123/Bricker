@@ -1,14 +1,19 @@
 package bricker.gameobjects;
 
 import bricker.BrickerGameManager;
-import danogl.GameManager;
 import danogl.GameObject;
+import danogl.collisions.Layer;
 import danogl.gui.rendering.Renderable;
+import danogl.util.Counter;
 import danogl.util.Vector2;
 
 public class Heart extends GameObject {
 
-    private final BrickerGameManager brickerGameManager;
+    private Counter strikeCounter;
+    private BrickerGameManager brickerGameManager;
+    private GameObject[] hearts;
+
+
 
     /**
      * Construct a new GameObject instance.
@@ -22,16 +27,17 @@ public class Heart extends GameObject {
     public Heart(Vector2 topLeftCorner,
                  Vector2 dimensions,
                  Renderable renderable,
-                 BrickerGameManager brickerGameManager, int initialStrikes) {
+                 Counter strikeCounter,
+                 BrickerGameManager brickerGameManager) {
         super(topLeftCorner, dimensions, renderable);
+        this.strikeCounter = strikeCounter;
         this.brickerGameManager = brickerGameManager;
     }
 
     public void deleteHeart() {
-        brickerGameManager.deleteObject(this);
+        strikeCounter.decrement();
+        brickerGameManager.deleteObject(this, Layer.UI);
     }
 
-
-
-
+    // TODO -> add heart later on
 }

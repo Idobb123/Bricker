@@ -3,6 +3,7 @@ package bricker;
 import bricker.brick_strategies.BasicCollisionStrategy;
 import bricker.gameobjects.Ball;
 import bricker.gameobjects.Brick;
+import bricker.gameobjects.Heart;
 import bricker.gameobjects.Paddle;
 import danogl.GameManager;
 import danogl.GameObject;
@@ -10,6 +11,7 @@ import danogl.collisions.Layer;
 import danogl.gui.*;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
+import danogl.gui.rendering.TextRenderable;
 import danogl.util.Counter;
 import danogl.util.Vector2;
 
@@ -24,37 +26,42 @@ public class BrickerGameManager extends GameManager {
     private static float WALL_WIDTH = 6;
     private static float BRICK_SPACE = 2;
     private static float BRICK_HEIGHT = 15;
+    private static final float BALL_SPEED = 300;
+    private static int MAX_HEARTS = 100;
     private int bricksPerRow;
     private int numberOfRows;
 
-    private static final float BALL_SPEED = 200;
     private WindowController windowController;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private UserInputListener inputListener;
     private Ball ball;
-    private int strikesLeft;
-
+    private Counter strikeCounter;
     private Counter brickCounter;
+    private Heart[] hearts;
+
+    private GameObject strikeNumberDisplay;
 
     public BrickerGameManager(String windowTitle, Vector2 windowDimensions) {
         super(windowTitle, windowDimensions);
-        this.strikesLeft = DEFAULT_STRIKES_LEFT;
+        this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
         this.bricksPerRow= 8;
         this.numberOfRows = 7;
         this.brickCounter = new Counter(bricksPerRow * numberOfRows);
+        this.hearts = new Heart[MAX_HEARTS];
     }
     public BrickerGameManager(String windowTitle, Vector2 windowDimensions, int bricksPerRow, int numberOfRows) {
         super(windowTitle, windowDimensions);
-        this.strikesLeft = DEFAULT_STRIKES_LEFT;
+        this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
         this.bricksPerRow= bricksPerRow;
         this.numberOfRows = numberOfRows;
         this.brickCounter = new Counter(bricksPerRow * numberOfRows);
+        this.hearts = new Heart[MAX_HEARTS];
     }
 
     public static void main(String[] args) {
         BrickerGameManager gameManager = new BrickerGameManager("Bricker",
-                new Vector2(700, 500),2,1);
+                new Vector2(700, 500));
         gameManager.run();
     }
 
@@ -65,6 +72,16 @@ public class BrickerGameManager extends GameManager {
     public void deleteObject (GameObject object) {
             this.gameObjects().removeGameObject(object);
     }
+
+    /**
+     * overloading the previous method with the layered version
+     * @param object
+     * @param layer
+     */
+    public void deleteObject (GameObject object, int layer) {
+        this.gameObjects().removeGameObject(object, layer);
+    }
+
 
     @Override
     public void initializeGame(ImageReader imageReader,
@@ -89,6 +106,10 @@ public class BrickerGameManager extends GameManager {
         createBackground(windowDimensions, imageReader);
         // Create the bricks
         createBricks(imageReader, windowDimensions);
+        // create the initial first three hearts
+        createInitialHearts(imageReader, windowDimensions);
+        // create the initial strike counter
+        createStrikeNumberDisplay(windowDimensions);
     }
 
     @Override
@@ -101,11 +122,13 @@ public class BrickerGameManager extends GameManager {
     private void checkStrikes() {
         double ballHeight = ball.getCenter().y();
         if(ballHeight > windowController.getWindowDimensions().y()) { // that is, we lost the ball
-            this.strikesLeft -= 1;
+            hearts[strikeCounter.value() - 1].deleteHeart();
+            deleteObject(this.strikeNumberDisplay);
+            createStrikeNumberDisplay(windowController.getWindowDimensions());;
             deleteObject(this.ball);
             createBall(imageReader, soundReader, windowController.getWindowDimensions());
         }
-        if(this.strikesLeft <= 0) {
+        if(this.strikeCounter.value() <= 0) {
             String prompt = LOSING_PROMPT;
             if(windowController.openYesNoDialog(prompt))
                 windowController.resetGame();
@@ -168,8 +191,7 @@ public class BrickerGameManager extends GameManager {
 
     private void createBricks(ImageReader imageReader, Vector2 windowDimensions) {
         Renderable brickImage = imageReader.readImage("assets/brick.png", false);
-        Vector2 curBrickLocation;// = new Vector2(WALL_WIDTH +BRICK_SPACE, WALL_WIDTH + BRICK_SPACE);
-//        System.out.println(curBrickLocation);
+        Vector2 curBrickLocation;
         float brickWidth = (windowDimensions.x() - 2*(WALL_WIDTH+BRICK_SPACE)) / bricksPerRow - BRICK_SPACE;
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j <bricksPerRow; j++) {
@@ -180,6 +202,39 @@ public class BrickerGameManager extends GameManager {
                 this.gameObjects().addGameObject(brick); // TODO -> think about which layer the brick belongs to
 
             }
+        }
+    }
+
+    private void createInitialHearts(ImageReader imageReader, Vector2 windowDimensions) {
+        Renderable heartImage = imageReader.readImage("assets/heart.png", true);
+        Vector2 heartLocation;
+        for (int i = 0; i < strikeCounter.value(); i++) {
+            heartLocation = new Vector2(40 + i*20 ,windowDimensions.y() - 20 );
+            hearts[i] = new Heart(Vector2.ZERO, new Vector2(15, 15),
+                    heartImage, strikeCounter, this);
+            hearts[i].setCenter(heartLocation);
+            this.gameObjects().addGameObject(hearts[i], Layer.UI);
+        }
+    }
+
+    private void createStrikeNumberDisplay(Vector2 windowDimensions) {
+        TextRenderable strikeText = new TextRenderable(String.valueOf(strikeCounter.value()));
+        strikeText.setColor(getStrikeNumberDisplayColor());
+        this.strikeNumberDisplay =
+                new GameObject(Vector2.ZERO, new Vector2(30, 30), strikeText);
+        strikeNumberDisplay.setCenter(new Vector2(15, windowDimensions.y() - 40));
+        this.gameObjects().addGameObject(strikeNumberDisplay);
+    }
+
+    private Color getStrikeNumberDisplayColor() {
+        if (strikeCounter.value() == 2) {
+            return Color.yellow;
+        }
+        else if (strikeCounter.value() == 1) {
+            return Color.red;
+        }
+        else {
+            return Color.green;
         }
     }
 }
