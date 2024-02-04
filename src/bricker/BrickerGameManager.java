@@ -19,6 +19,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+/**
+ * A class that manages the run of a Bricker game. relies upon the GameManager of the DanoGameLabs library.
+ * Manages all of the objects of the game, including the background and the UI
+ */
 public class BrickerGameManager extends GameManager {
     private static final String LOSING_PROMPT = "You lose! Play again?";
     private static final String WINNING_PROMPT = "You win! Play again?";
@@ -42,6 +46,11 @@ public class BrickerGameManager extends GameManager {
 
     private GameObject strikeNumberDisplay;
 
+    /**
+     *  Constructs a new BrickerGameManager instance
+     * @param windowTitle
+     * @param windowDimensions
+     */
     public BrickerGameManager(String windowTitle, Vector2 windowDimensions) {
         super(windowTitle, windowDimensions);
         this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
