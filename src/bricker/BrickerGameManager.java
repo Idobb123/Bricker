@@ -45,7 +45,7 @@ public class BrickerGameManager extends GameManager {
     private Heart[] hearts;
 
     private GameObject strikeNumberDisplay;
-
+    private BrickFactory brickFactory = new BrickFactory();
     /**
      *  Constructs a new BrickerGameManager instance
      * @param windowTitle
@@ -91,7 +91,6 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().removeGameObject(object, layer);
     }
 
-
     @Override
     public void initializeGame(ImageReader imageReader,
                                SoundReader soundReader,
@@ -133,7 +132,7 @@ public class BrickerGameManager extends GameManager {
         if(ballHeight > windowController.getWindowDimensions().y()) { // that is, we lost the ball
             hearts[strikeCounter.value() - 1].deleteHeart();
             deleteObject(this.strikeNumberDisplay);
-            createStrikeNumberDisplay(windowController.getWindowDimensions());;
+            createStrikeNumberDisplay(windowController.getWindowDimensions());
             deleteObject(this.ball);
             createBall(imageReader, soundReader, windowController.getWindowDimensions());
         }
@@ -206,10 +205,8 @@ public class BrickerGameManager extends GameManager {
             for (int j = 0; j <bricksPerRow; j++) {
                 curBrickLocation = new Vector2(WALL_WIDTH + BRICK_SPACE + (brickWidth + BRICK_SPACE) * j,
                         WALL_WIDTH + BRICK_SPACE + (BRICK_HEIGHT + BRICK_SPACE) * i);
-                Brick brick = new Brick(curBrickLocation, new Vector2(brickWidth, BRICK_HEIGHT),
-                        brickImage, new BasicCollisionStrategy(this), brickCounter);
+                Brick brick = brickFactory.createBrick(curBrickLocation, new Vector2(brickWidth, BRICK_HEIGHT), brickImage, this, brickCounter);
                 this.gameObjects().addGameObject(brick); // TODO -> think about which layer the brick belongs to
-
             }
         }
     }
@@ -246,4 +243,18 @@ public class BrickerGameManager extends GameManager {
             return Color.green;
         }
     }
+    public void addHeart() {
+        Vector2 windowDimensions = windowController.getWindowDimensions();
+        Renderable heartImage = this.imageReader.readImage("assets/heart.png", true);
+        int heartIndex = strikeCounter.value();
+        Vector2 heartLocation = new Vector2(40 + heartIndex * 20, windowDimensions.y() - 20);
+        hearts[heartIndex] = new Heart(Vector2.ZERO, new Vector2(15, 15),
+                heartImage, strikeCounter, this);
+        hearts[heartIndex].setCenter(heartLocation);
+        this.gameObjects().addGameObject(hearts[heartIndex], Layer.UI);
+        this.strikeCounter.increment();
+        deleteObject(this.strikeNumberDisplay);
+        createStrikeNumberDisplay(windowController.getWindowDimensions());
+    }
+
 }
