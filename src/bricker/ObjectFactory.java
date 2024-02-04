@@ -3,6 +3,7 @@ package bricker;
 import bricker.brick_strategies.AdditionalHeartStrategy;
 import bricker.brick_strategies.BasicCollisionStrategy;
 import bricker.brick_strategies.CollisionStrategy;
+import bricker.brick_strategies.PuckStrategy;
 import bricker.gameobjects.Ball;
 import bricker.gameobjects.Brick;
 import bricker.gameobjects.Heart;
@@ -20,7 +21,6 @@ import java.awt.*;
 import java.util.Random;
 
 public class ObjectFactory {
-    private static float BALL_SPEED = 300;
     private static float BRICK_HEIGHT = 15;
     private ImageReader imageReader;
     private SoundReader soundReader;
@@ -69,20 +69,21 @@ public class ObjectFactory {
         paddle.setCenter(paddleLocation);
         return paddle;
     }
-    public Ball createBall(Vector2 ballLocation){
-        Renderable ballImage = imageReader.readImage("assets/ball.png", true);
+    public Ball createBall(Vector2 ballLocation, Vector2 velocity, int ballType){ //TODO: Change ballType to Enum.
+        Renderable ballImage = imageReader.readImage("assets/ball.png", true); //TODO : delete after using enum.
+        Vector2 ballSize = new Vector2(20, 20);
+        switch (ballType) {
+            case 0:
+                ballImage = imageReader.readImage("assets/ball.png", true);
+                break;
+            case 1:
+                ballImage = imageReader.readImage("assets/mockBall.png", true);
+                ballSize = ballSize.mult(0.75f);
+                break;
+        }
         Sound collisionSound = soundReader.readSound("assets/blop_cut_silenced.wav");
-        Ball ball = new Ball(Vector2.ZERO, new Vector2(20, 20), ballImage, collisionSound);
-        float ballSpeedX = BALL_SPEED;
-        float ballSpeedY = BALL_SPEED;
-        Random rand = new Random();
-        if (rand.nextBoolean()) {
-            ballSpeedX *= -1;
-        }
-        if (rand.nextBoolean()) {
-            ballSpeedY *= -1;
-        }
-        ball.setVelocity(new Vector2(ballSpeedX, ballSpeedY));
+        Ball ball = new Ball(Vector2.ZERO, ballSize, ballImage, collisionSound);
+        ball.setVelocity(velocity);
         ball.setCenter(ballLocation);
         return ball;
     }
@@ -117,9 +118,9 @@ public class ObjectFactory {
         int nextInt = rand.nextInt(10);
         CollisionStrategy strategy;
         switch (nextInt) { // TODO: Change to Enum.
-//            case 5:
-//                strategy = new PuckStrategy(gameManager);
-//                break;
+            case 5:
+                strategy = new PuckStrategy(brickerGameManager);
+                break;
 //            case 6:
 //                strategy = new AdditionalPaddleStrategy(gameManager);
 //                break;

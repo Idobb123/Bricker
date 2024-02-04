@@ -11,11 +11,8 @@ public class AdditionalHeartStrategy implements CollisionStrategy{
     }
     @Override
     public void onCollision(GameObject object1, GameObject object2) {
-        deleteBrick(object1);
+        brickerGameManager.deleteObject(object1);
         brickerGameManager.addHeart();
 
-    }
-    private void deleteBrick(GameObject object) {
-        brickerGameManager.deleteObject(object);
     }
 }

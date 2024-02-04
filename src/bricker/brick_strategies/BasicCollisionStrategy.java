@@ -11,11 +11,6 @@ public class BasicCollisionStrategy implements CollisionStrategy{
     }
     @Override
     public void onCollision(GameObject object1, GameObject object2) {
-        deleteBrick(object1);
+        brickerGameManager.deleteObject(object1);
     }
-
-    private void deleteBrick(GameObject object) {
-        brickerGameManager.deleteObject(object);
-    }
-
 }

@@ -31,6 +31,8 @@ public class BrickerGameManager extends GameManager {
     private static float BRICK_SPACE = 2;
     private static float BRICK_HEIGHT = 15;
     private static int MAX_HEARTS = 100;
+    private static float BALL_SPEED = 300;
+    private Random rand = new Random();
     private int bricksPerRow;
     private int numberOfRows;
 
@@ -164,7 +166,16 @@ public class BrickerGameManager extends GameManager {
 
     private void createBall(Vector2 windowDimensions) {
         Vector2 ballLocation = windowDimensions.mult(0.5f);
-        this.ball = objectFactory.createBall(ballLocation);
+        float ballSpeedX = BALL_SPEED;
+        float ballSpeedY = BALL_SPEED;
+        if (this.rand.nextBoolean()) {
+            ballSpeedX *= -1;
+        }
+        if (this.rand.nextBoolean()) {
+            ballSpeedY *= -1;
+        }
+        Vector2 velocity = new Vector2(ballSpeedX, ballSpeedY);
+        this.ball = objectFactory.createBall(ballLocation, velocity, 0);
         this.gameObjects().addGameObject(ball);
     }
 
@@ -219,5 +230,13 @@ public class BrickerGameManager extends GameManager {
         this.strikeCounter.increment();
         deleteObject(this.strikeNumberDisplay, Layer.UI);
         createStrikeNumberDisplay(windowController.getWindowDimensions());
+    }
+    public void createPuck(Vector2 puckLocation){
+        double angle = this.rand.nextDouble() * Math.PI;
+        float ballSpeedX = (float)Math.cos(angle) * BALL_SPEED;
+        float ballSpeedY = (float)Math.sin(angle) * BALL_SPEED;
+        Vector2 velocity = new Vector2(ballSpeedX, ballSpeedY);
+        Ball ball = objectFactory.createBall(puckLocation, velocity, 1);
+        this.gameObjects().addGameObject(ball);
     }
 }
