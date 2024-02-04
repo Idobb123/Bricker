@@ -8,13 +8,15 @@ import danogl.collisions.Layer;
 import danogl.gui.*;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
+import danogl.gui.rendering.TextRenderable;
 import danogl.util.Counter;
 import danogl.util.Vector2;
 
+import java.awt.*;
 import java.util.Random;
 
 public class ObjectFactory {
-    private static float BALL_SPEED = 400;
+    private static float BALL_SPEED = 300;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private UserInputListener inputListener;
@@ -45,8 +47,15 @@ public class ObjectFactory {
                 heartImage, strikeCounter, brickerGameManager);
         heart.setCenter(heartLocation);
         return heart;
-
     }
+    public GameObject createStrikeNumberDisplay(Vector2 textLocation){
+        TextRenderable strikeText = new TextRenderable(String.valueOf(strikeCounter.value()));
+        strikeText.setColor(getStrikeNumberDisplayColor());
+        GameObject strikeNumberDisplay = new GameObject(Vector2.ZERO, new Vector2(30, 30), strikeText);
+        strikeNumberDisplay.setCenter(textLocation);
+        return strikeNumberDisplay;
+    }
+
     public Paddle createPaddle(Vector2 paddleLocation){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
         Paddle paddle = new Paddle(Vector2.ZERO, new Vector2(200, 20), paddleImage, inputListener);
@@ -78,5 +87,16 @@ public class ObjectFactory {
     }
     public GameObject createWall(Vector2 wallLocation, Vector2 wallDimensions){
         return new GameObject(wallLocation, wallDimensions, new RectangleRenderable(null));
+    }
+    private Color getStrikeNumberDisplayColor() {
+        if (strikeCounter.value() == 2) {
+            return Color.yellow;
+        }
+        else if (strikeCounter.value() == 1) {
+            return Color.red;
+        }
+        else {
+            return Color.green;
+        }
     }
 }

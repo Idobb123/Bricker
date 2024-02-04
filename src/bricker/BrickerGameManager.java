@@ -132,7 +132,7 @@ public class BrickerGameManager extends GameManager {
         double ballHeight = ball.getCenter().y();
         if(ballHeight > windowController.getWindowDimensions().y()) { // that is, we lost the ball
             hearts[strikeCounter.value() - 1].deleteHeart();
-            deleteObject(this.strikeNumberDisplay);
+            deleteObject(this.strikeNumberDisplay, Layer.UI);
             createStrikeNumberDisplay(windowController.getWindowDimensions());
             deleteObject(this.ball);
             createBall(windowController.getWindowDimensions());
@@ -207,25 +207,10 @@ public class BrickerGameManager extends GameManager {
     }
 
     private void createStrikeNumberDisplay(Vector2 windowDimensions) {
-        TextRenderable strikeText = new TextRenderable(String.valueOf(strikeCounter.value()));
-        strikeText.setColor(getStrikeNumberDisplayColor());
-        this.strikeNumberDisplay =
-                new GameObject(Vector2.ZERO, new Vector2(30, 30), strikeText);
-        strikeNumberDisplay.setCenter(new Vector2(15, windowDimensions.y() - 40));
-        this.gameObjects().addGameObject(strikeNumberDisplay);
+        this.strikeNumberDisplay = objectFactory.createStrikeNumberDisplay(new Vector2(15, windowDimensions.y() - 40));
+        this.gameObjects().addGameObject(strikeNumberDisplay, Layer.UI);
     }
 
-    private Color getStrikeNumberDisplayColor() {
-        if (strikeCounter.value() == 2) {
-            return Color.yellow;
-        }
-        else if (strikeCounter.value() == 1) {
-            return Color.red;
-        }
-        else {
-            return Color.green;
-        }
-    }
     public void addHeart() {
         Vector2 windowDimensions = windowController.getWindowDimensions();
         Renderable heartImage = this.imageReader.readImage("assets/heart.png", true);
@@ -236,7 +221,7 @@ public class BrickerGameManager extends GameManager {
         hearts[heartIndex].setCenter(heartLocation);
         this.gameObjects().addGameObject(hearts[heartIndex], Layer.UI);
         this.strikeCounter.increment();
-        deleteObject(this.strikeNumberDisplay);
+        deleteObject(this.strikeNumberDisplay, Layer.UI);
         createStrikeNumberDisplay(windowController.getWindowDimensions());
     }
 
