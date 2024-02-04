@@ -1,6 +1,10 @@
 package bricker;
 
+import bricker.brick_strategies.AdditionalHeartStrategy;
+import bricker.brick_strategies.BasicCollisionStrategy;
+import bricker.brick_strategies.CollisionStrategy;
 import bricker.gameobjects.Ball;
+import bricker.gameobjects.Brick;
 import bricker.gameobjects.Heart;
 import bricker.gameobjects.Paddle;
 import danogl.GameObject;
@@ -17,6 +21,7 @@ import java.util.Random;
 
 public class ObjectFactory {
     private static float BALL_SPEED = 300;
+    private static float BRICK_HEIGHT = 15;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private UserInputListener inputListener;
@@ -24,6 +29,7 @@ public class ObjectFactory {
     private final BrickerGameManager brickerGameManager;
     private Counter brickCounter;
     private Counter strikeCounter;
+    private Random rand;
 
     ObjectFactory(ImageReader imageReader,
                   SoundReader soundReader,
@@ -40,6 +46,7 @@ public class ObjectFactory {
         this.brickerGameManager = brickerGameManager;
         this.brickCounter = brickCounter;
         this.strikeCounter = strikeCounter;
+        this.rand = new Random();
     }
     public Heart createHeart(Vector2 heartLocation){
         Renderable heartImage = this.imageReader.readImage("assets/heart.png", true);
@@ -98,5 +105,41 @@ public class ObjectFactory {
         else {
             return Color.green;
         }
+    }
+    public Brick createBrick(Vector2 brickLocation, float brickWidth) {
+        CollisionStrategy strategy = generateStrategy();
+        Renderable brickImage = imageReader.readImage("assets/brick.png", false);
+        Brick brick = new Brick(brickLocation, new Vector2(brickWidth, BRICK_HEIGHT), brickImage,strategy, brickCounter);
+        return brick;
+    }
+
+    public CollisionStrategy generateStrategy(){
+        int nextInt = rand.nextInt(10);
+        CollisionStrategy strategy;
+        switch (nextInt) { // TODO: Change to Enum.
+//            case 5:
+//                strategy = new PuckStrategy(gameManager);
+//                break;
+//            case 6:
+//                strategy = new AdditionalPaddleStrategy(gameManager);
+//                break;
+//
+//            case 7:
+//                strategy = new CameraChangeStrategy(gameManager);
+//                break;
+
+            case 8:
+                strategy = new AdditionalHeartStrategy(brickerGameManager);
+                break;
+
+//            case 9:
+//                strategy = new DoubleStrategy(gameManager);
+//                break;
+
+
+            default:
+                strategy = new BasicCollisionStrategy(brickerGameManager);
+        }
+        return strategy;
     }
 }

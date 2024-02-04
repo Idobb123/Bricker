@@ -44,7 +44,6 @@ public class BrickerGameManager extends GameManager {
     private Heart[] hearts;
 
     private GameObject strikeNumberDisplay;
-    private BrickFactory brickFactory = new BrickFactory();
     private ObjectFactory objectFactory;
     /**
      *  Constructs a new BrickerGameManager instance
@@ -114,7 +113,7 @@ public class BrickerGameManager extends GameManager {
         // create the background
         createBackground(windowDimensions);
         // Create the bricks
-        createBricks(imageReader, windowDimensions);
+        createBricks(windowDimensions);
         // create the initial first three hearts
         createInitialHearts(windowDimensions);
         // create the initial strike counter
@@ -183,15 +182,14 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().addGameObject(background, Layer.BACKGROUND);
     }
 
-    private void createBricks(ImageReader imageReader, Vector2 windowDimensions) {
-        Renderable brickImage = imageReader.readImage("assets/brick.png", false);
+    private void createBricks(Vector2 windowDimensions) {
         Vector2 curBrickLocation;
         float brickWidth = (windowDimensions.x() - 2*(WALL_WIDTH+BRICK_SPACE)) / bricksPerRow - BRICK_SPACE;
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j <bricksPerRow; j++) {
                 curBrickLocation = new Vector2(WALL_WIDTH + BRICK_SPACE + (brickWidth + BRICK_SPACE) * j,
                         WALL_WIDTH + BRICK_SPACE + (BRICK_HEIGHT + BRICK_SPACE) * i);
-                Brick brick = brickFactory.createBrick(curBrickLocation, new Vector2(brickWidth, BRICK_HEIGHT), brickImage, this, brickCounter);
+                Brick brick = this.objectFactory.createBrick(curBrickLocation, brickWidth);
                 this.gameObjects().addGameObject(brick); // TODO -> think about which layer the brick belongs to
             }
         }
@@ -213,16 +211,13 @@ public class BrickerGameManager extends GameManager {
 
     public void addHeart() {
         Vector2 windowDimensions = windowController.getWindowDimensions();
-        Renderable heartImage = this.imageReader.readImage("assets/heart.png", true);
         int heartIndex = strikeCounter.value();
         Vector2 heartLocation = new Vector2(40 + heartIndex * 20, windowDimensions.y() - 20);
-        hearts[heartIndex] = new Heart(Vector2.ZERO, new Vector2(15, 15),
-                heartImage, strikeCounter, this);
+        hearts[heartIndex] = objectFactory.createHeart(heartLocation);
         hearts[heartIndex].setCenter(heartLocation);
         this.gameObjects().addGameObject(hearts[heartIndex], Layer.UI);
         this.strikeCounter.increment();
         deleteObject(this.strikeNumberDisplay, Layer.UI);
         createStrikeNumberDisplay(windowController.getWindowDimensions());
     }
-
 }
