@@ -39,7 +39,6 @@ public class BrickFactory {
             default:
                 strategy = new BasicCollisionStrategy(gameManager);
         }
-        System.out.println(strategy);
         return new Brick(brickLocation, brickSize, brickImage, strategy, hitCounter);
 
     }

@@ -46,6 +46,7 @@ public class BrickerGameManager extends GameManager {
 
     private GameObject strikeNumberDisplay;
     private BrickFactory brickFactory = new BrickFactory();
+    private ObjectFactory objectFactory;
     /**
      *  Constructs a new BrickerGameManager instance
      * @param windowTitle
@@ -101,6 +102,7 @@ public class BrickerGameManager extends GameManager {
         this.soundReader = soundReader;
         this.inputListener = inputListener;
         this.windowController = windowController; // like in the videos, but for everything
+        this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener, windowController, this, brickCounter, strikeCounter);
 
         Vector2 windowDimensions = windowController.getWindowDimensions();
 
@@ -115,7 +117,7 @@ public class BrickerGameManager extends GameManager {
         // Create the bricks
         createBricks(imageReader, windowDimensions);
         // create the initial first three hearts
-        createInitialHearts(imageReader, windowDimensions);
+        createInitialHearts(windowDimensions);
         // create the initial strike counter
         createStrikeNumberDisplay(windowDimensions);
     }
@@ -211,14 +213,11 @@ public class BrickerGameManager extends GameManager {
         }
     }
 
-    private void createInitialHearts(ImageReader imageReader, Vector2 windowDimensions) {
-        Renderable heartImage = imageReader.readImage("assets/heart.png", true);
-        Vector2 heartLocation;
+    private void createInitialHearts(Vector2 windowDimensions) {
+        Heart heart;
         for (int i = 0; i < strikeCounter.value(); i++) {
-            heartLocation = new Vector2(40 + i*20 ,windowDimensions.y() - 20 );
-            hearts[i] = new Heart(Vector2.ZERO, new Vector2(15, 15),
-                    heartImage, strikeCounter, this);
-            hearts[i].setCenter(heartLocation);
+            heart = objectFactory.createHeart(new Vector2(40 + i*20 ,windowDimensions.y() - 20 ));
+            hearts[i] = heart;
             this.gameObjects().addGameObject(hearts[i], Layer.UI);
         }
     }
