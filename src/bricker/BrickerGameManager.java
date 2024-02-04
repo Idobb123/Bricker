@@ -112,7 +112,7 @@ public class BrickerGameManager extends GameManager {
         // create the wallas
         buildWalls(windowDimensions);
         // create the background
-        createBackground(windowDimensions, imageReader);
+        createBackground(windowDimensions);
         // Create the bricks
         createBricks(imageReader, windowDimensions);
         // create the initial first three hearts
@@ -178,10 +178,8 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().addGameObject(upperWall);
     }
 
-    private void createBackground(Vector2 windowDimensions, ImageReader imageReader) {
-        Renderable backgroundImage = imageReader.readImage("assets/DARK_BG2_small.jpeg", false);
-        GameObject background = new GameObject(Vector2.ZERO, windowDimensions,backgroundImage);
-        // background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
+    private void createBackground(Vector2 windowDimensions) {
+        GameObject background = objectFactory.createBackGround(windowDimensions);
         this.gameObjects().addGameObject(background, Layer.BACKGROUND);
     }
 

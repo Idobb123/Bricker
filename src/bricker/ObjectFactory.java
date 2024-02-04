@@ -13,7 +13,7 @@ import danogl.util.Vector2;
 import java.util.Random;
 
 public class ObjectFactory {
-    private static float BALL_SPEED = 300;
+    private static float BALL_SPEED = 400;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private UserInputListener inputListener;
@@ -69,5 +69,10 @@ public class ObjectFactory {
         ball.setCenter(ballLocation);
         return ball;
     }
-
+    public GameObject createBackGround(Vector2 windowDimensions){
+        Renderable backgroundImage = imageReader.readImage("assets/DARK_BG2_small.jpeg", false);
+        GameObject background = new GameObject(Vector2.ZERO, windowDimensions,backgroundImage);
+        // background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
+        return background;
+    }
 }
