@@ -6,6 +6,7 @@ import bricker.gameobjects.Paddle;
 import danogl.GameObject;
 import danogl.collisions.Layer;
 import danogl.gui.*;
+import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Counter;
 import danogl.util.Vector2;
@@ -74,5 +75,8 @@ public class ObjectFactory {
         GameObject background = new GameObject(Vector2.ZERO, windowDimensions,backgroundImage);
         // background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         return background;
+    }
+    public GameObject createWall(Vector2 wallLocation, Vector2 wallDimensions){
+        return new GameObject(wallLocation, wallDimensions, new RectangleRenderable(null));
     }
 }

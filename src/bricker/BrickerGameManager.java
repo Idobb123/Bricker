@@ -170,9 +170,9 @@ public class BrickerGameManager extends GameManager {
     }
 
     private void buildWalls(Vector2 windowDimensions) {
-        GameObject leftWall = new GameObject(Vector2.ZERO, new Vector2(WALL_WIDTH, windowDimensions.y()), new RectangleRenderable(null));
-        GameObject rightWall = new GameObject(new Vector2(windowDimensions.x() - 6, 0), new Vector2(6, windowDimensions.y()), new RectangleRenderable(null));
-        GameObject upperWall = new GameObject(Vector2.ZERO, new Vector2(windowDimensions.x(), 6), new RectangleRenderable(null));
+        GameObject leftWall = objectFactory.createWall(Vector2.ZERO, new Vector2(WALL_WIDTH, windowDimensions.y()));
+        GameObject rightWall = objectFactory.createWall(new Vector2(windowDimensions.x() - 6, 0), new Vector2(6, windowDimensions.y()));
+        GameObject upperWall = objectFactory.createWall(Vector2.ZERO, new Vector2(windowDimensions.x(), 6));
         this.gameObjects().addGameObject(leftWall);
         this.gameObjects().addGameObject(rightWall);
         this.gameObjects().addGameObject(upperWall);
