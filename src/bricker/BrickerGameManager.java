@@ -175,7 +175,7 @@ public class BrickerGameManager extends GameManager {
             ballSpeedY *= -1;
         }
         Vector2 velocity = new Vector2(ballSpeedX, ballSpeedY);
-        this.ball = objectFactory.createBall(ballLocation, velocity, 0);
+        this.ball = objectFactory.createBall(ballLocation, velocity, BallType.REGULAR);
         this.gameObjects().addGameObject(ball);
     }
 
@@ -236,7 +236,7 @@ public class BrickerGameManager extends GameManager {
         float ballSpeedX = (float)Math.cos(angle) * BALL_SPEED;
         float ballSpeedY = (float)Math.sin(angle) * BALL_SPEED;
         Vector2 velocity = new Vector2(ballSpeedX, ballSpeedY);
-        Ball ball = objectFactory.createBall(puckLocation, velocity, 1);
+        Ball ball = objectFactory.createBall(puckLocation, velocity, BallType.PUCK);
         this.gameObjects().addGameObject(ball);
     }
 }

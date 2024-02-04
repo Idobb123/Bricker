@@ -69,14 +69,14 @@ public class ObjectFactory {
         paddle.setCenter(paddleLocation);
         return paddle;
     }
-    public Ball createBall(Vector2 ballLocation, Vector2 velocity, int ballType){ //TODO: Change ballType to Enum.
-        Renderable ballImage = imageReader.readImage("assets/ball.png", true); //TODO : delete after using enum.
+    public Ball createBall(Vector2 ballLocation, Vector2 velocity, BallType ballType){
+        Renderable ballImage = null;
         Vector2 ballSize = new Vector2(20, 20);
         switch (ballType) {
-            case 0:
+            case REGULAR:
                 ballImage = imageReader.readImage("assets/ball.png", true);
                 break;
-            case 1:
+            case PUCK:
                 ballImage = imageReader.readImage("assets/mockBall.png", true);
                 ballSize = ballSize.mult(0.75f);
                 break;
