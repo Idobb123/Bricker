@@ -30,7 +30,6 @@ public class BrickerGameManager extends GameManager {
     private static float WALL_WIDTH = 6;
     private static float BRICK_SPACE = 2;
     private static float BRICK_HEIGHT = 15;
-    private static final float BALL_SPEED = 300;
     private static int MAX_HEARTS = 100;
     private int bricksPerRow;
     private int numberOfRows;
@@ -107,9 +106,9 @@ public class BrickerGameManager extends GameManager {
         Vector2 windowDimensions = windowController.getWindowDimensions();
 
         //create ball
-        createBall(imageReader, soundReader, windowDimensions);
+        createBall(windowDimensions);
         // create paddle
-        createPaddle(imageReader, inputListener, windowDimensions);
+        createPaddle(windowDimensions);
         // create the wallas
         buildWalls(windowDimensions);
         // create the background
@@ -136,7 +135,7 @@ public class BrickerGameManager extends GameManager {
             deleteObject(this.strikeNumberDisplay);
             createStrikeNumberDisplay(windowController.getWindowDimensions());
             deleteObject(this.ball);
-            createBall(imageReader, soundReader, windowController.getWindowDimensions());
+            createBall(windowController.getWindowDimensions());
         }
         if(this.strikeCounter.value() <= 0) {
             String prompt = LOSING_PROMPT;
@@ -158,35 +157,22 @@ public class BrickerGameManager extends GameManager {
         }
     }
 
-    private void createPaddle(ImageReader imageReader, UserInputListener inputListener, Vector2 windowDimensions) {
-        Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
-        GameObject paddle = new Paddle(Vector2.ZERO, new Vector2(200, 20), paddleImage, inputListener);
-        paddle.setCenter(new Vector2(windowDimensions.x() / 2, (int) windowDimensions.y() - 30));
+    private void createPaddle(Vector2 windowDimensions) {
+        Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, (int) windowDimensions.y() - 30);
+        GameObject paddle = objectFactory.createPaddle(paddleLocation);
         this.gameObjects().addGameObject(paddle);
     }
 
-    private void createBall(ImageReader imageReader, SoundReader soundReader, Vector2 windowDimensions) {
-        Renderable ballImage = imageReader.readImage("assets/ball.png", true);
-        Sound collisionSound = soundReader.readSound("assets/blop_cut_silenced.wav");
-        ball = new Ball(Vector2.ZERO, new Vector2(20, 20), ballImage, collisionSound);
-        float ballSpeedX = BALL_SPEED;
-        float ballSpeedY = BALL_SPEED;
-        Random rand = new Random();
-        if (rand.nextBoolean()) {
-            ballSpeedX *= -1;
-        }
-        if (rand.nextBoolean()) {
-            ballSpeedY *= -1;
-        }
-        ball.setVelocity(new Vector2(ballSpeedX, ballSpeedY));
-        ball.setCenter(windowDimensions.mult(0.5f));
+    private void createBall(Vector2 windowDimensions) {
+        Vector2 ballLocation = windowDimensions.mult(0.5f);
+        this.ball = objectFactory.createBall(ballLocation);
         this.gameObjects().addGameObject(ball);
     }
 
     private void buildWalls(Vector2 windowDimensions) {
-        GameObject leftWall = new GameObject(Vector2.ZERO, new Vector2(WALL_WIDTH, windowDimensions.y()), new RectangleRenderable(Color.CYAN));
-        GameObject rightWall = new GameObject(new Vector2(windowDimensions.x() - 6, 0), new Vector2(6, windowDimensions.y()), new RectangleRenderable(Color.CYAN));
-        GameObject upperWall = new GameObject(Vector2.ZERO, new Vector2(windowDimensions.x(), 6), new RectangleRenderable(Color.CYAN));
+        GameObject leftWall = new GameObject(Vector2.ZERO, new Vector2(WALL_WIDTH, windowDimensions.y()), new RectangleRenderable(null));
+        GameObject rightWall = new GameObject(new Vector2(windowDimensions.x() - 6, 0), new Vector2(6, windowDimensions.y()), new RectangleRenderable(null));
+        GameObject upperWall = new GameObject(Vector2.ZERO, new Vector2(windowDimensions.x(), 6), new RectangleRenderable(null));
         this.gameObjects().addGameObject(leftWall);
         this.gameObjects().addGameObject(rightWall);
         this.gameObjects().addGameObject(upperWall);
