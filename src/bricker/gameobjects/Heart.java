@@ -9,6 +9,7 @@ import danogl.util.Counter;
 import danogl.util.Vector2;
 
 public class Heart extends GameObject {
+    private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
 
     private Counter strikeCounter;
     private BrickerGameManager brickerGameManager;
@@ -42,7 +43,14 @@ public class Heart extends GameObject {
 
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
+        brickerGameManager.addHeart();
+        brickerGameManager.deleteObject(this);
+    }
 
+    @Override
+    public boolean shouldCollideWith(GameObject other) {
+        boolean cond1 = (other.getTag()).equals(ORIGINAL_PADDLE_TAG);
+        return cond1;
     }
 
 }

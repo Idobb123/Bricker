@@ -26,11 +26,13 @@ public class BrickerGameManager extends GameManager {
     private static final String LOSING_PROMPT = "You lose! Play again?";
     private static final String WINNING_PROMPT = "You win! Play again?";
     private static final int TARGET_FRAME_RATE = 60;
+    private static final float HEART_FALLING_SPEED = 100;
+    private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
     private static int DEFAULT_STRIKES_LEFT = 3;
     private static float WALL_WIDTH = 6;
     private static float BRICK_SPACE = 2;
     private static float BRICK_HEIGHT = 15;
-    private static int MAX_HEARTS = 100;
+    private static int MAX_HEARTS = 4;
     private static float BALL_SPEED = 300;
     private Random rand = new Random();
     private int bricksPerRow;
@@ -164,6 +166,7 @@ public class BrickerGameManager extends GameManager {
     private void createPaddle(Vector2 windowDimensions) {
         Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, (int) windowDimensions.y() - 30);
         GameObject paddle = objectFactory.createPaddle(paddleLocation);
+        paddle.setTag(ORIGINAL_PADDLE_TAG);
         this.gameObjects().addGameObject(paddle);
     }
 
@@ -225,17 +228,26 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().addGameObject(strikeNumberDisplay, Layer.UI);
     }
 
-    public void addHeart() {
+    public void addHeart() { // TODO: Maybe change to private
         Vector2 windowDimensions = windowController.getWindowDimensions();
-        int heartIndex = strikeCounter.value();
+        int heartIndex = strikeCounter.value(); // TODO Change the hearts array to 4
+        if (heartIndex >= MAX_HEARTS) {
+            return;
+        }
         Vector2 heartLocation = new Vector2(40 + heartIndex * 20, windowDimensions.y() - 20);
         hearts[heartIndex] = objectFactory.createHeart(heartLocation);
-        hearts[heartIndex].setCenter(heartLocation);
         this.gameObjects().addGameObject(hearts[heartIndex], Layer.UI);
         this.strikeCounter.increment();
         deleteObject(this.strikeNumberDisplay, Layer.UI);
         createStrikeNumberDisplay(windowController.getWindowDimensions());
     }
+
+    public void createHeart(Vector2 heartLocation) {
+        Heart heart = objectFactory.createHeart(heartLocation);
+        heart.setVelocity(new Vector2(0, HEART_FALLING_SPEED));
+        this.gameObjects().addGameObject(heart);
+    }
+
     public void createPuck(Vector2 puckLocation) {
         double angle = this.rand.nextDouble() * Math.PI;
         float ballSpeedX = (float)Math.cos(angle) * BALL_SPEED;
@@ -246,8 +258,9 @@ public class BrickerGameManager extends GameManager {
     }
 
     public void createDuplicatePaddle() {
-        if (checkForDuplicatePaddle()) // cyber
+        if (checkForDuplicatePaddle()) {
             return;
+        }
         Vector2 windowDimensions = windowController.getWindowDimensions();
         Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, windowDimensions.y()/2);
         GameObject duplicatePaddle = objectFactory.createDuplicatePaddle(paddleLocation);
@@ -256,7 +269,7 @@ public class BrickerGameManager extends GameManager {
 
     private boolean checkForDuplicatePaddle() {
         for (GameObject object : this.gameObjects()) {
-            if (object instanceof DuplicatePaddle) {
+            if (object instanceof DuplicatePaddle) { // TODO: change to using tags
                 return true;
             }
         }

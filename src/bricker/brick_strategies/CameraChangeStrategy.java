@@ -13,7 +13,7 @@ public class CameraChangeStrategy implements CollisionStrategy{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
             brickerGameManager.deleteObject(brick);
-            if (other == brickerGameManager.getBall())
+            if (other == brickerGameManager.getBall() && brickerGameManager.camera() == null)
                 brickerGameManager.setCameraToBall();
     }
 }

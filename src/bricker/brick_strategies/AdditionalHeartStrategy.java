@@ -12,7 +12,7 @@ public class AdditionalHeartStrategy implements CollisionStrategy{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         brickerGameManager.deleteObject(brick);
-        brickerGameManager.addHeart();
+        brickerGameManager.createHeart(brick.getCenter());
 
     }
 }

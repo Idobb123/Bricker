@@ -34,7 +34,7 @@ public class DuplicatePaddle extends Paddle{
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if (other instanceof Ball) // cyber
+        if (other instanceof Ball) // cyber TODO: use tags instead of instanceof
             hitCounter.increment();
         if (hitCounter.value() >= 4) {
             brickerGameManager.deleteObject(this);
