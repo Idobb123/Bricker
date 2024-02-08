@@ -1,13 +1,7 @@
 package bricker;
 
-import bricker.brick_strategies.AdditionalHeartStrategy;
-import bricker.brick_strategies.BasicCollisionStrategy;
-import bricker.brick_strategies.CollisionStrategy;
-import bricker.brick_strategies.PuckStrategy;
-import bricker.gameobjects.Ball;
-import bricker.gameobjects.Brick;
-import bricker.gameobjects.Heart;
-import bricker.gameobjects.Paddle;
+import bricker.brick_strategies.*;
+import bricker.gameobjects.*;
 import danogl.GameObject;
 import danogl.collisions.Layer;
 import danogl.gui.*;
@@ -69,6 +63,14 @@ public class ObjectFactory {
         paddle.setCenter(paddleLocation);
         return paddle;
     }
+
+    public DuplicatePaddle createDuplicatePaddle(Vector2 paddleLocation){
+        Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
+        DuplicatePaddle duplicatePaddle = new DuplicatePaddle(Vector2.ZERO, new Vector2(200, 20),
+                paddleImage, inputListener, brickerGameManager );
+        duplicatePaddle.setCenter(paddleLocation);
+        return duplicatePaddle;
+    }
     public Ball createBall(Vector2 ballLocation, Vector2 velocity, BallType ballType){
         Renderable ballImage = null;
         Vector2 ballSize = new Vector2(20, 20);
@@ -121,10 +123,10 @@ public class ObjectFactory {
             case 5:
                 strategy = new PuckStrategy(brickerGameManager);
                 break;
-//            case 6:
-//                strategy = new AdditionalPaddleStrategy(gameManager);
-//                break;
-//
+            case 6:
+                strategy = new AdditionalPaddleStrategy(brickerGameManager);
+                break;
+
 //            case 7:
 //                strategy = new CameraChangeStrategy(gameManager);
 //                break;

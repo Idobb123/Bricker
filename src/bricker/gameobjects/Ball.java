@@ -38,5 +38,4 @@ public class Ball  extends GameObject {
     public int getCollisionCounter() {
         return this.collisionCounter;
     }
-
 }

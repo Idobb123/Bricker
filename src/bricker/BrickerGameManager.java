@@ -1,10 +1,7 @@
 package bricker;
 
 import bricker.brick_strategies.BasicCollisionStrategy;
-import bricker.gameobjects.Ball;
-import bricker.gameobjects.Brick;
-import bricker.gameobjects.Heart;
-import bricker.gameobjects.Paddle;
+import bricker.gameobjects.*;
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
@@ -26,6 +23,7 @@ import java.util.Random;
 public class BrickerGameManager extends GameManager {
     private static final String LOSING_PROMPT = "You lose! Play again?";
     private static final String WINNING_PROMPT = "You win! Play again?";
+    private static final int TARGET_FRAME_RATE = 60;
     private static int DEFAULT_STRIKES_LEFT = 3;
     private static float WALL_WIDTH = 6;
     private static float BRICK_SPACE = 2;
@@ -60,6 +58,7 @@ public class BrickerGameManager extends GameManager {
         this.brickCounter = new Counter(bricksPerRow * numberOfRows);
         this.hearts = new Heart[MAX_HEARTS];
     }
+
     public BrickerGameManager(String windowTitle, Vector2 windowDimensions, int bricksPerRow, int numberOfRows) {
         super(windowTitle, windowDimensions);
         this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
@@ -105,6 +104,7 @@ public class BrickerGameManager extends GameManager {
         this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener, windowController, this, brickCounter, strikeCounter);
 
         Vector2 windowDimensions = windowController.getWindowDimensions();
+         windowController.setTargetFramerate(TARGET_FRAME_RATE);
 
         //create ball
         createBall(windowDimensions);
@@ -163,6 +163,8 @@ public class BrickerGameManager extends GameManager {
         GameObject paddle = objectFactory.createPaddle(paddleLocation);
         this.gameObjects().addGameObject(paddle);
     }
+
+
 
     private void createBall(Vector2 windowDimensions) {
         Vector2 ballLocation = windowDimensions.mult(0.5f);
@@ -239,4 +241,23 @@ public class BrickerGameManager extends GameManager {
         Ball ball = objectFactory.createBall(puckLocation, velocity, BallType.PUCK);
         this.gameObjects().addGameObject(ball);
     }
+
+    public void createDuplicatePaddle() {
+        if (checkForDuplicatePaddle()) //cyber
+            return;
+        Vector2 windowDimensions = windowController.getWindowDimensions();
+        Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, windowDimensions.y()/2);
+        GameObject duplicatePaddle = objectFactory.createDuplicatePaddle(paddleLocation);
+        this.gameObjects().addGameObject(duplicatePaddle);
+    }
+
+    private boolean checkForDuplicatePaddle() {
+        for (GameObject object : this.gameObjects()) {
+            if (object instanceof DuplicatePaddle) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

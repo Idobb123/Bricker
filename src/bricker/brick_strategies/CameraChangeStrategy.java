@@ -4,7 +4,7 @@ import danogl.GameObject;
 
 public class CameraChangeStrategy implements CollisionStrategy{
     @Override
-    public void onCollision(GameObject object1, GameObject object2) {
+    public void onCollision(GameObject brick, GameObject other) {
 
     }
 }
