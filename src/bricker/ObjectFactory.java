@@ -126,11 +126,9 @@ public class ObjectFactory {
             case 6:
                 strategy = new AdditionalPaddleStrategy(brickerGameManager);
                 break;
-
-//            case 7:
-//                strategy = new CameraChangeStrategy(gameManager);
-//                break;
-
+            case 7:
+                strategy = new CameraChangeStrategy(brickerGameManager);
+                break;
             case 8:
                 strategy = new AdditionalHeartStrategy(brickerGameManager);
                 break;
@@ -138,7 +136,6 @@ public class ObjectFactory {
 //            case 9:
 //                strategy = new DoubleStrategy(gameManager);
 //                break;
-
 
             default:
                 strategy = new BasicCollisionStrategy(brickerGameManager);

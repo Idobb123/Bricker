@@ -2,6 +2,7 @@ package bricker.gameobjects;
 
 import bricker.BrickerGameManager;
 import danogl.GameObject;
+import danogl.collisions.Collision;
 import danogl.collisions.Layer;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Counter;
@@ -39,5 +40,9 @@ public class Heart extends GameObject {
         brickerGameManager.deleteObject(this, Layer.UI);
     }
 
-    // TODO -> add heart later on
+    @Override
+    public void onCollisionEnter(GameObject other, Collision collision) {
+
+    }
+
 }

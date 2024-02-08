@@ -4,6 +4,7 @@ import danogl.GameObject;
 import danogl.collisions.Collision;
 import danogl.gui.Sound;
 import danogl.gui.rendering.Renderable;
+import danogl.util.Counter;
 import danogl.util.Vector2;
 
 public class Ball  extends GameObject {
@@ -21,7 +22,10 @@ public class Ball  extends GameObject {
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
      */
-    public Ball(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable, Sound collisionSound) {
+    public Ball(Vector2 topLeftCorner,
+                Vector2 dimensions,
+                Renderable renderable,
+                Sound collisionSound) {
         super(topLeftCorner, dimensions, renderable);
         this.collisionSound = collisionSound;
     }
@@ -38,4 +42,5 @@ public class Ball  extends GameObject {
     public int getCollisionCounter() {
         return this.collisionCounter;
     }
+
 }

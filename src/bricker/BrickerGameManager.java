@@ -1,18 +1,20 @@
 package bricker;
 
-import bricker.brick_strategies.BasicCollisionStrategy;
-import bricker.gameobjects.*;
+import bricker.gameobjects.Ball;
+import bricker.gameobjects.Brick;
+import bricker.gameobjects.DuplicatePaddle;
+import bricker.gameobjects.Heart;
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
-import danogl.gui.*;
-import danogl.gui.rendering.RectangleRenderable;
-import danogl.gui.rendering.Renderable;
-import danogl.gui.rendering.TextRenderable;
+import danogl.gui.ImageReader;
+import danogl.gui.SoundReader;
+import danogl.gui.UserInputListener;
+import danogl.gui.WindowController;
+import danogl.gui.rendering.Camera;
 import danogl.util.Counter;
 import danogl.util.Vector2;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
@@ -45,6 +47,8 @@ public class BrickerGameManager extends GameManager {
 
     private GameObject strikeNumberDisplay;
     private ObjectFactory objectFactory;
+    private int cameraSetBricksLeft;
+
     /**
      *  Constructs a new BrickerGameManager instance
      * @param windowTitle
@@ -52,20 +56,15 @@ public class BrickerGameManager extends GameManager {
      */
     public BrickerGameManager(String windowTitle, Vector2 windowDimensions) {
         super(windowTitle, windowDimensions);
-        this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
         this.bricksPerRow= 8;
         this.numberOfRows = 7;
-        this.brickCounter = new Counter(bricksPerRow * numberOfRows);
-        this.hearts = new Heart[MAX_HEARTS];
+
     }
 
     public BrickerGameManager(String windowTitle, Vector2 windowDimensions, int bricksPerRow, int numberOfRows) {
         super(windowTitle, windowDimensions);
-        this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
         this.bricksPerRow= bricksPerRow;
         this.numberOfRows = numberOfRows;
-        this.brickCounter = new Counter(bricksPerRow * numberOfRows);
-        this.hearts = new Heart[MAX_HEARTS];
     }
 
     public static void main(String[] args) {
@@ -101,10 +100,13 @@ public class BrickerGameManager extends GameManager {
         this.soundReader = soundReader;
         this.inputListener = inputListener;
         this.windowController = windowController; // like in the videos, but for everything
+        this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
+        this.brickCounter = new Counter(bricksPerRow * numberOfRows);
+        this.hearts = new Heart[MAX_HEARTS];
         this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener, windowController, this, brickCounter, strikeCounter);
 
         Vector2 windowDimensions = windowController.getWindowDimensions();
-         windowController.setTargetFramerate(TARGET_FRAME_RATE);
+        windowController.setTargetFramerate(TARGET_FRAME_RATE);
 
         //create ball
         createBall(windowDimensions);
@@ -127,15 +129,16 @@ public class BrickerGameManager extends GameManager {
         super.update(deltaTime);
         checkStrikes();
         checkWinCondition();
+        setCameraToDefault();
     }
 
     private void checkStrikes() {
-        double ballHeight = ball.getCenter().y();
-        if(ballHeight > windowController.getWindowDimensions().y()) { // that is, we lost the ball
+        if(isBallOutOfBounds()) { // that is, we lost the ball
             hearts[strikeCounter.value() - 1].deleteHeart();
             deleteObject(this.strikeNumberDisplay, Layer.UI);
             createStrikeNumberDisplay(windowController.getWindowDimensions());
             deleteObject(this.ball);
+            this.setCamera(null);
             createBall(windowController.getWindowDimensions());
         }
         if(this.strikeCounter.value() <= 0) {
@@ -233,7 +236,7 @@ public class BrickerGameManager extends GameManager {
         deleteObject(this.strikeNumberDisplay, Layer.UI);
         createStrikeNumberDisplay(windowController.getWindowDimensions());
     }
-    public void createPuck(Vector2 puckLocation){
+    public void createPuck(Vector2 puckLocation) {
         double angle = this.rand.nextDouble() * Math.PI;
         float ballSpeedX = (float)Math.cos(angle) * BALL_SPEED;
         float ballSpeedY = (float)Math.sin(angle) * BALL_SPEED;
@@ -243,7 +246,7 @@ public class BrickerGameManager extends GameManager {
     }
 
     public void createDuplicatePaddle() {
-        if (checkForDuplicatePaddle()) //cyber
+        if (checkForDuplicatePaddle()) // cyber
             return;
         Vector2 windowDimensions = windowController.getWindowDimensions();
         Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, windowDimensions.y()/2);
@@ -258,6 +261,32 @@ public class BrickerGameManager extends GameManager {
             }
         }
         return false;
+    }
+
+    public void setCameraToBall() {
+        this.cameraSetBricksLeft  = this.ball.getCollisionCounter();
+        this.setCamera(new Camera(ball,
+                Vector2.ZERO,
+                windowController.getWindowDimensions().mult(1.2f),
+                windowController.getWindowDimensions()));
+    }
+
+    public void setCameraToDefault() {
+        if (this.ball.getCollisionCounter() - cameraSetBricksLeft >= 4) {
+            this.setCamera(null);
+        }
+    }
+
+    private boolean isBallOutOfBounds() {
+        float ballHeight = ball.getCenter().y();
+        if (ballHeight > windowController.getWindowDimensions().y()) {
+            return true;
+        }
+        return false;
+    }
+
+    public Ball getBall(){
+        return this.ball;
     }
 
 }
