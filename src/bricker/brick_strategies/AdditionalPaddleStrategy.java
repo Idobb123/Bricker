@@ -3,18 +3,19 @@ package bricker.brick_strategies;
 import bricker.BrickerGameManager;
 import danogl.GameObject;
 
-public class AdditionalPaddleStrategy implements CollisionStrategy{
+public class AdditionalPaddleStrategy extends StrategyDecorator{
 
     private final BrickerGameManager brickerGameManager;
 
-    public AdditionalPaddleStrategy(BrickerGameManager brickerGameManager) {
-
+    public AdditionalPaddleStrategy(CollisionStrategy collisionStrategy, BrickerGameManager brickerGameManager) {
+        super(collisionStrategy);
         this.brickerGameManager = brickerGameManager;
     }
 
     @Override
-    public void onCollision(GameObject object1, GameObject object2) {
-        brickerGameManager.deleteObject(object1);
+    public void onCollision(GameObject brick, GameObject other) {
+        super.onCollision(brick, other);
+        brickerGameManager.deleteObject(brick);
         brickerGameManager.createDuplicatePaddle();
     }
 }

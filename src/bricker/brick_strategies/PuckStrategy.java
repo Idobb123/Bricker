@@ -4,13 +4,15 @@ import bricker.BrickerGameManager;
 import danogl.GameObject;
 import danogl.util.Vector2;
 
-public class PuckStrategy implements CollisionStrategy{
+public class PuckStrategy extends StrategyDecorator{
     private BrickerGameManager brickerGameManager;
-    public PuckStrategy(BrickerGameManager brickerGameManager) {
+    public PuckStrategy(CollisionStrategy collisionStrategy,BrickerGameManager brickerGameManager) {
+        super(collisionStrategy);
         this.brickerGameManager = brickerGameManager;
     }
     @Override
     public void onCollision(GameObject brick, GameObject other) {
+        super.onCollision(brick, other);
         brickerGameManager.deleteObject(brick);
         brickerGameManager.createPuck(brick.getCenter());
         brickerGameManager.createPuck(brick.getCenter());

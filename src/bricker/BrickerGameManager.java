@@ -25,7 +25,7 @@ import java.util.Random;
 public class BrickerGameManager extends GameManager {
     private static final String LOSING_PROMPT = "You lose! Play again?";
     private static final String WINNING_PROMPT = "You win! Play again?";
-    private static final int TARGET_FRAME_RATE = 60;
+    private static final int TARGET_FRAME_RATE = 40;
     private static final float HEART_FALLING_SPEED = 100;
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
     private static int DEFAULT_STRIKES_LEFT = 3;
@@ -37,7 +37,6 @@ public class BrickerGameManager extends GameManager {
     private Random rand = new Random();
     private int bricksPerRow;
     private int numberOfRows;
-
     private WindowController windowController;
     private ImageReader imageReader;
     private SoundReader soundReader;
@@ -169,8 +168,6 @@ public class BrickerGameManager extends GameManager {
         paddle.setTag(ORIGINAL_PADDLE_TAG);
         this.gameObjects().addGameObject(paddle);
     }
-
-
 
     private void createBall(Vector2 windowDimensions) {
         Vector2 ballLocation = windowDimensions.mult(0.5f);

@@ -118,28 +118,44 @@ public class ObjectFactory {
 
     public CollisionStrategy generateStrategy(){
         int nextInt = rand.nextInt(10);
-        CollisionStrategy strategy;
-        switch (nextInt) { // TODO: Change to Enum.
+        CollisionStrategy strategy = new BasicCollisionStrategy(brickerGameManager);
+        return chooseStrategyBasedOnInt(nextInt, strategy);
+    }
+
+    private CollisionStrategy chooseStrategyBasedOnInt(int stratInt, CollisionStrategy strategy) {
+        switch (stratInt) { // TODO: Change to Enum.
             case 5:
-                strategy = new PuckStrategy(brickerGameManager);
+                strategy = new PuckStrategy(strategy,brickerGameManager);
                 break;
             case 6:
-                strategy = new AdditionalPaddleStrategy(brickerGameManager);
+                strategy = new AdditionalPaddleStrategy(strategy, brickerGameManager);
                 break;
             case 7:
-                strategy = new CameraChangeStrategy(brickerGameManager);
+                strategy = new CameraChangeStrategy(strategy, brickerGameManager);
                 break;
             case 8:
-                strategy = new AdditionalHeartStrategy(brickerGameManager);
+                strategy = new AdditionalHeartStrategy(strategy, brickerGameManager);
                 break;
-
-//            case 9:
-//                strategy = new DoubleStrategy(gameManager);
-//                break;
-
-            default:
-                strategy = new BasicCollisionStrategy(brickerGameManager);
+            case 9:
+                int[] strategyIntegers = chooseDoubleStrategies();
+                for (int currentStratInt: strategyIntegers){
+                    strategy = chooseStrategyBasedOnInt(currentStratInt, strategy);
+                }
+                break;
         }
         return strategy;
+
+    }
+    private int[] chooseDoubleStrategies(){ // TODO: Ask what should happen if initial choice is 2 doubles...
+        int stratInt1 = rand.nextInt(5) + 5;
+        int stratInt2 = rand.nextInt(5) + 5;
+        if (stratInt1 == 9 || stratInt2 == 9){
+            int[] behaviours =  {rand.nextInt(4) + 5,
+                    rand.nextInt(4) + 5,
+                    rand.nextInt(4) + 5};
+            return behaviours;
+        }
+
+        return new int[]{stratInt1, stratInt2};
     }
 }
