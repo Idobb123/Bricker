@@ -1,6 +1,6 @@
 package bricker;
 
-public enum BallType {
+public enum BallType { // TODO: figure out what to do with ball TYPE
     REGULAR,
     PUCK
 }
