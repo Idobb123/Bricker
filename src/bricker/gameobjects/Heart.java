@@ -8,6 +8,9 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Counter;
 import danogl.util.Vector2;
 
+/**
+ * A class representing a heart object.
+ */
 public class Heart extends GameObject {
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
 
@@ -16,7 +19,7 @@ public class Heart extends GameObject {
 
 
     /**
-     * Construct a new GameObject instance.
+     * Construct a new Heart instance.
      *
      * @param topLeftCorner Position of the object, in window coordinates (pixels).
      *                      Note that (0,0) is the top-left corner of the window.
@@ -34,11 +37,13 @@ public class Heart extends GameObject {
         this.brickerGameManager = brickerGameManager;
     }
 
+    /**
+     * Decrements the strike counter and deletes itself using brickerGameManager.
+     */
     public void deleteHeart() {
         strikeCounter.decrement();
         brickerGameManager.deleteObject(this, Layer.UI);
     }
-
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         brickerGameManager.addHeart();
