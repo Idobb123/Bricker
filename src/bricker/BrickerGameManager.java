@@ -22,7 +22,7 @@ import java.util.Random;
 public class BrickerGameManager extends GameManager {
     private static final String LOSING_PROMPT = "You lose! Play again?";
     private static final String WINNING_PROMPT = "You win! Play again?";
-    private static final int TARGET_FRAME_RATE = 40;
+    private static final int TARGET_FRAME_RATE = 100;
     private static final float HEART_FALLING_SPEED = 100;
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
     private static final String TEMPORARY_PADDLE_TAG = "temporaryPaddle";
@@ -40,7 +40,7 @@ public class BrickerGameManager extends GameManager {
     private UserInputListener inputListener;
     private Ball ball;
     private Counter strikeCounter;
-    private Counter brickCounter;
+    private Counter bricksLeftCounter;
     private Heart[] hearts;
     private GameObject strikeNumberDisplay;
     private ObjectFactory objectFactory;
@@ -98,9 +98,9 @@ public class BrickerGameManager extends GameManager {
         this.inputListener = inputListener;
         this.windowController = windowController; // like in the videos, but for everything
         this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
-        this.brickCounter = new Counter(bricksPerRow * numberOfRows);
+        this.bricksLeftCounter = new Counter(bricksPerRow * numberOfRows);
         this.hearts = new Heart[MAX_HEARTS];
-        this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener, windowController, this, brickCounter, strikeCounter);
+        this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener, windowController, this, bricksLeftCounter, strikeCounter);
 
         Vector2 windowDimensions = windowController.getWindowDimensions();
         windowController.setTargetFramerate(TARGET_FRAME_RATE);
@@ -149,7 +149,7 @@ public class BrickerGameManager extends GameManager {
 
     private void checkWinCondition() {
         boolean winningKeyPressed = inputListener.isKeyPressed(KeyEvent.VK_W);
-        if(this.brickCounter.value() == 0 || winningKeyPressed) {
+        if(this.bricksLeftCounter.value() == 0 || winningKeyPressed) {
             String prompt = WINNING_PROMPT;
             if(windowController.openYesNoDialog(prompt))
                 windowController.resetGame();

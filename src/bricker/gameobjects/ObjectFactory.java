@@ -20,7 +20,7 @@ public class ObjectFactory {
     private UserInputListener inputListener;
     private WindowController windowController;
     private final BrickerGameManager brickerGameManager;
-    private Counter brickCounter;
+    private Counter bricksLeftCounter;
     private Counter strikeCounter;
     private Random rand;
 
@@ -29,7 +29,7 @@ public class ObjectFactory {
                          UserInputListener inputListener,
                          WindowController windowController,
                          BrickerGameManager brickerGameManager,
-                         Counter brickCounter,
+                         Counter bricksLeftCounter,
                          Counter strikeCounter){
 
         this.imageReader = imageReader;
@@ -37,7 +37,7 @@ public class ObjectFactory {
         this.inputListener = inputListener;
         this.windowController = windowController;
         this.brickerGameManager = brickerGameManager;
-        this.brickCounter = brickCounter;
+        this.bricksLeftCounter = bricksLeftCounter;
         this.strikeCounter = strikeCounter;
         this.rand = new Random();
     }
@@ -111,7 +111,7 @@ public class ObjectFactory {
     public Brick createBrick(Vector2 brickLocation, float brickWidth) {
         CollisionStrategy strategy = generateStrategy();
         Renderable brickImage = imageReader.readImage("assets/brick.png", false);
-        Brick brick = new Brick(brickLocation, new Vector2(brickWidth, BRICK_HEIGHT), brickImage,strategy, brickCounter);
+        Brick brick = new Brick(brickLocation, new Vector2(brickWidth, BRICK_HEIGHT), brickImage,strategy, bricksLeftCounter);
         return brick;
     }
 
@@ -121,12 +121,12 @@ public class ObjectFactory {
             return strategy;
         }
 
-        BrickStrategyEnum[] strategyTypes = BrickStrategyEnum.values();
+        SpecialBrickStrategyEnum[] strategyTypes = SpecialBrickStrategyEnum.values();
         int nextStrategyNumber = rand.nextInt(5);
-        BrickStrategyEnum randomStrategyType = strategyTypes[nextStrategyNumber];
+        SpecialBrickStrategyEnum randomStrategyType = strategyTypes[nextStrategyNumber];
         return chooseStrategyBasedOnInt(randomStrategyType, strategy);
     }
-    private CollisionStrategy chooseStrategyBasedOnInt(BrickStrategyEnum strategyType, CollisionStrategy strategy) {
+    private CollisionStrategy chooseStrategyBasedOnInt(SpecialBrickStrategyEnum strategyType, CollisionStrategy strategy) {
         switch (strategyType) {
             case PUCK:
                 return new PuckStrategy(strategy, brickerGameManager);
@@ -137,8 +137,8 @@ public class ObjectFactory {
             case ADDITIONAL_HEART:
                 return new AdditionalHeartStrategy(strategy, brickerGameManager);
             case DOUBLE_STRATEGY:
-                BrickStrategyEnum[] strategyIntegers = chooseDoubleStrategies();
-                for (BrickStrategyEnum currentStratInt : strategyIntegers) {
+                SpecialBrickStrategyEnum[] strategyIntegers = chooseDoubleStrategies();
+                for (SpecialBrickStrategyEnum currentStratInt : strategyIntegers) {
                     strategy = chooseStrategyBasedOnInt(currentStratInt, strategy);
                 }
                 return strategy;
@@ -146,17 +146,17 @@ public class ObjectFactory {
                 return strategy;
         }
     }
-    private BrickStrategyEnum[] chooseDoubleStrategies(){
-        BrickStrategyEnum[] strategyTypes = BrickStrategyEnum.values();
-        BrickStrategyEnum randomStrategyType1 = strategyTypes[rand.nextInt(5)];
-        BrickStrategyEnum randomStrategyType2 = strategyTypes[rand.nextInt(5)];
-        if (randomStrategyType1 == BrickStrategyEnum.DOUBLE_STRATEGY || randomStrategyType2 == BrickStrategyEnum.DOUBLE_STRATEGY){
-            BrickStrategyEnum[] behaviours =  {strategyTypes[rand.nextInt(4)],
+    private SpecialBrickStrategyEnum[] chooseDoubleStrategies(){
+        SpecialBrickStrategyEnum[] strategyTypes = SpecialBrickStrategyEnum.values();
+        SpecialBrickStrategyEnum randomStrategyType1 = strategyTypes[rand.nextInt(5)];
+        SpecialBrickStrategyEnum randomStrategyType2 = strategyTypes[rand.nextInt(5)];
+        if (randomStrategyType1 == SpecialBrickStrategyEnum.DOUBLE_STRATEGY || randomStrategyType2 == SpecialBrickStrategyEnum.DOUBLE_STRATEGY){
+            SpecialBrickStrategyEnum[] behaviours =  {strategyTypes[rand.nextInt(4)],
                     strategyTypes[rand.nextInt(4)],
                     strategyTypes[rand.nextInt(4)]};
             return behaviours;
         }
 
-        return new BrickStrategyEnum[]{randomStrategyType1, randomStrategyType2};
+        return new SpecialBrickStrategyEnum[]{randomStrategyType1, randomStrategyType2};
     }
 }

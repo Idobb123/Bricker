@@ -14,7 +14,7 @@ import danogl.util.Vector2;
 public class Brick extends GameObject {
 
     private CollisionStrategy collisionStrategy;
-    private final Counter hitCounter;
+    private final Counter bricksLeftCounter;
 
     /**
      * Construct a new GameObject instance.
@@ -24,20 +24,23 @@ public class Brick extends GameObject {
      * @param dimensions    Width and height in window coordinates.
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
+     * @param collisionStrategy The collision strategy the brick should apply when another
+     *                          object collides with the brick.
+     * @param bricksLeftCounter A counter containing how many bricks are still "in the game".
      */
     public Brick(Vector2 topLeftCorner,
                  Vector2 dimensions,
                  Renderable renderable,
                  CollisionStrategy collisionStrategy,
-                 Counter hitCounter) {
+                 Counter bricksLeftCounter) {
         super(topLeftCorner, dimensions, renderable);
         this.collisionStrategy = collisionStrategy;
-        this.hitCounter = hitCounter;
+        this.bricksLeftCounter = bricksLeftCounter;
     }
     /**
      * The function is called whenever an object collides with the brick.
      * It calls the onCollision method of its collision strategy therefore applying the strategy.
-     * The function the decrease the hit counter by one.
+     * The function then decrease the hit counter by one.
      * @param other The GameObject with which a collision occurred.
      * @param collision Information regarding this collision.
      *                  A reasonable elastic behavior can be achieved with:
@@ -46,6 +49,6 @@ public class Brick extends GameObject {
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         collisionStrategy.onCollision(this,other);
-        hitCounter.decrement();
+        bricksLeftCounter.decrement();
     }
 }
