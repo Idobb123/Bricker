@@ -1,5 +1,5 @@
 package bricker;
-
+//TODO: give credit for using the images and sounds.
 import bricker.gameobjects.*;
 import danogl.GameManager;
 import danogl.GameObject;

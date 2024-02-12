@@ -146,7 +146,7 @@ public class ObjectFactory {
                 return strategy;
         }
     }
-    private BrickStrategyEnum[] chooseDoubleStrategies(){ // TODO: Ask what should happen if initial choice is 2 doubles...
+    private BrickStrategyEnum[] chooseDoubleStrategies(){
         BrickStrategyEnum[] strategyTypes = BrickStrategyEnum.values();
         BrickStrategyEnum randomStrategyType1 = strategyTypes[rand.nextInt(5)];
         BrickStrategyEnum randomStrategyType2 = strategyTypes[rand.nextInt(5)];
