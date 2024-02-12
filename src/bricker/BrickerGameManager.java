@@ -203,7 +203,7 @@ public class BrickerGameManager extends GameManager {
                 curBrickLocation = new Vector2(WALL_WIDTH + BRICK_SPACE + (brickWidth + BRICK_SPACE) * j,
                         WALL_WIDTH + BRICK_SPACE + (BRICK_HEIGHT + BRICK_SPACE) * i);
                 Brick brick = this.objectFactory.createBrick(curBrickLocation, brickWidth);
-                this.gameObjects().addGameObject(brick); // TODO -> think about which layer the brick belongs to
+                this.gameObjects().addGameObject(brick, Layer.STATIC_OBJECTS);
             }
         }
     }
