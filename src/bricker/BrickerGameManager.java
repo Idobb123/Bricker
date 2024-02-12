@@ -25,7 +25,7 @@ public class BrickerGameManager extends GameManager {
     private static final int TARGET_FRAME_RATE = 40;
     private static final float HEART_FALLING_SPEED = 100;
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
-    private static final String DUPLICATE_PADDLE_TAG = "duplicatePaddle";
+    private static final String TEMPORARY_PADDLE_TAG = "temporaryPaddle";
     private static final String ORIGINAL_BALL_TAG = "originalBall";
     private static int DEFAULT_STRIKES_LEFT = 3;
     private static float WALL_WIDTH = 15;
@@ -255,20 +255,20 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().addGameObject(ball);
     }
 
-    public void createDuplicatePaddle() { // TODO: maybe delete duplicatePaddle class, problems with making the original disappear
-        if (checkForDuplicatePaddle()) {
+    public void createTemporaryPaddle() {
+        if (checkForTemporaryPaddle()) {
             return;
         }
         Vector2 windowDimensions = windowController.getWindowDimensions();
         Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, windowDimensions.y()/2);
-        GameObject duplicatePaddle = objectFactory.createDuplicatePaddle(paddleLocation, windowDimensions.x());
-        duplicatePaddle.setTag(DUPLICATE_PADDLE_TAG);
-        this.gameObjects().addGameObject(duplicatePaddle);
+        GameObject temporaryPaddle = objectFactory.createTemporaryPaddle(paddleLocation, windowDimensions.x());
+        temporaryPaddle.setTag(TEMPORARY_PADDLE_TAG);
+        this.gameObjects().addGameObject(temporaryPaddle);
     }
 
-    private boolean checkForDuplicatePaddle() {
+    private boolean checkForTemporaryPaddle() {
         for (GameObject object : this.gameObjects()) {
-            if (object.getTag().equals(DUPLICATE_PADDLE_TAG)) {
+            if (object.getTag().equals(TEMPORARY_PADDLE_TAG)) {
                 return true;
             }
         }

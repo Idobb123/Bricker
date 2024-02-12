@@ -63,12 +63,12 @@ public class ObjectFactory {
         return paddle;
     }
 
-    public DuplicatePaddle createDuplicatePaddle(Vector2 paddleLocation, float windowWidth){
+    public TemporaryPaddle createTemporaryPaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
-        DuplicatePaddle duplicatePaddle = new DuplicatePaddle(Vector2.ZERO, new Vector2(200, 20),
+        TemporaryPaddle temporaryPaddle = new TemporaryPaddle(Vector2.ZERO, new Vector2(200, 20),
                 paddleImage, inputListener, brickerGameManager, windowWidth );
-        duplicatePaddle.setCenter(paddleLocation);
-        return duplicatePaddle;
+        temporaryPaddle.setCenter(paddleLocation);
+        return temporaryPaddle;
     }
     public Ball createBall(Vector2 ballLocation, Vector2 velocity, BallType ballType){
         Renderable ballImage = null;
@@ -116,42 +116,68 @@ public class ObjectFactory {
     }
 
     public CollisionStrategy generateStrategy(){
-        int nextInt = rand.nextInt(10);
         CollisionStrategy strategy = new BasicCollisionStrategy(brickerGameManager);
-        return chooseStrategyBasedOnInt(nextInt, strategy);
-    }
-
-    private CollisionStrategy chooseStrategyBasedOnInt(int stratInt, CollisionStrategy strategy) {
-        switch (stratInt) { // TODO: Change to Enum.
-            case 5:
-                strategy = new PuckStrategy(strategy,brickerGameManager);
-                break;
-            case 6:
-                strategy = new AdditionalPaddleStrategy(strategy, brickerGameManager);
-                break;
-            case 7:
-                strategy = new CameraChangeStrategy(strategy, brickerGameManager);
-                break;
-            case 8:
-                strategy = new AdditionalHeartStrategy(strategy, brickerGameManager);
-                break;
-            case 9:
-                int[] strategyIntegers = chooseDoubleStrategies();
-                for (int currentStratInt: strategyIntegers){
-                    strategy = chooseStrategyBasedOnInt(currentStratInt, strategy);
-                }
-                break;
+        if (rand.nextBoolean()) {
+            return strategy;
         }
-        return strategy;
 
+        BrickStrategyEnum[] strategyTypes = BrickStrategyEnum.values();
+        int nextStrategyNumber = rand.nextInt(5);
+        BrickStrategyEnum randomStrategyType = strategyTypes[nextStrategyNumber];
+        return chooseStrategyBasedOnInt(randomStrategyType, strategy);
     }
+    private CollisionStrategy chooseStrategyBasedOnInt(BrickStrategyEnum strategyType, CollisionStrategy strategy) {
+        switch (strategyType) {
+            case PUCK:
+                return new PuckStrategy(strategy, brickerGameManager);
+            case ADDITIONAL_PADDLE:
+                return new AdditionalPaddleStrategy(strategy, brickerGameManager);
+            case CAMERA_CHANGE:
+                return new CameraChangeStrategy(strategy, brickerGameManager);
+            case ADDITIONAL_HEART:
+                return new AdditionalHeartStrategy(strategy, brickerGameManager);
+            case DOUBLE_STRATEGY:
+                int[] strategyIntegers = chooseDoubleStrategies();
+                for (int currentStratInt : strategyIntegers) {
+                    strategy = chooseStrategyBasedOnInt(BrickStrategyEnum.values()[currentStratInt], strategy);
+                }
+                return strategy;
+            default:
+                return strategy;
+        }
+    }
+//
+//    private CollisionStrategy chooseStrategyBasedOnInt(int stratInt, CollisionStrategy strategy) {
+//        switch (stratInt) { // TODO: Change to Enum.
+//            case 5:
+//                strategy = new PuckStrategy(strategy,brickerGameManager);
+//                break;
+//            case 6:
+//                strategy = new AdditionalPaddleStrategy(strategy, brickerGameManager);
+//                break;
+//            case 7:
+//                strategy = new CameraChangeStrategy(strategy, brickerGameManager);
+//                break;
+//            case 8:
+//                strategy = new AdditionalHeartStrategy(strategy, brickerGameManager);
+//                break;
+//            case 9:
+//                int[] strategyIntegers = chooseDoubleStrategies();
+//                for (int currentStratInt: strategyIntegers){
+//                    strategy = chooseStrategyBasedOnInt(currentStratInt, strategy);
+//                }
+//                break;
+//        }
+//        return strategy;
+//
+//    }
     private int[] chooseDoubleStrategies(){ // TODO: Ask what should happen if initial choice is 2 doubles...
-        int stratInt1 = rand.nextInt(5) + 5;
-        int stratInt2 = rand.nextInt(5) + 5;
-        if (stratInt1 == 9 || stratInt2 == 9){
-            int[] behaviours =  {rand.nextInt(4) + 5,
-                    rand.nextInt(4) + 5,
-                    rand.nextInt(4) + 5};
+        int stratInt1 = rand.nextInt(5) ;
+        int stratInt2 = rand.nextInt(5);
+        if (stratInt1 == 4 || stratInt2 == 4){
+            int[] behaviours =  {rand.nextInt(4),
+                    rand.nextInt(4) ,
+                    rand.nextInt(4)};
             return behaviours;
         }
 

@@ -47,7 +47,8 @@ public class Brick extends GameObject {
     public void onCollisionEnter(GameObject other, Collision collision) {
         collisionStrategy.onCollision(this,other);
         hitCounter.decrement();
-        System.out.println(this);
-        System.out.println(hitCounter.value());
+//        System.out.println(this);
+//        System.out.println(other);
+//        System.out.println(hitCounter.value());
     }
 }

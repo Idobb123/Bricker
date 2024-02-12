@@ -29,6 +29,6 @@ public class AdditionalPaddleStrategy extends StrategyDecorator{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         super.onCollision(brick, other);
-        brickerGameManager.createDuplicatePaddle();
+        brickerGameManager.createTemporaryPaddle();
     }
 }
