@@ -20,6 +20,7 @@ public class BasicCollisionStrategy implements CollisionStrategy{
     /**
      * The function is responsible for applying the class strategy on a given brick when called.
      * The function deletes the brick using the brickerGameManager.
+     * The function is called whenever another object collides with the brick.
      * @param brick The brick to delete.
      * @param other The object that collided with the brick.
      */

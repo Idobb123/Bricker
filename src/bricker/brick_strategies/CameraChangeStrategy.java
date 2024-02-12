@@ -24,6 +24,7 @@ public class CameraChangeStrategy extends StrategyDecorator{
     /**
      * The function is responsible for applying the class strategy on a given brick when called.
      * The function deletes the brick and sets the camera to follow the "main" ball using the brickerGameManager.
+     * The function is called whenever another object collides with the brick.
      * @param brick The brick to apply the strategy on.
      * @param other The object that collided with the brick.
      */

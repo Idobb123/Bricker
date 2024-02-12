@@ -2,8 +2,6 @@ package bricker.brick_strategies;
 
 import bricker.BrickerGameManager;
 import danogl.GameObject;
-import danogl.collisions.Layer;
-import danogl.util.Vector2;
 
 /**
  * A class representing a strategy that creates two "puck" balls by braking a brick with this strategy.
@@ -24,6 +22,7 @@ public class PuckStrategy extends StrategyDecorator{
     /**
      * The function is responsible for applying the class strategy on a given brick when called.
      * The function deletes the brick and creates 2 additional "puck balls" using the brickerGameManager.
+     * The function is called whenever another object collides with the brick.
      * @param brick The brick to apply the strategy on.
      * @param other The object that collided with the brick.
      */

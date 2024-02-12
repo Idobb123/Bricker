@@ -1,15 +1,15 @@
 package bricker.gameobjects;
-//TODO: We should not reset the camera if the ball is gone mid camera special event.
-//TODO: Document all the constants.
 import danogl.GameObject;
 import danogl.collisions.Collision;
 import danogl.gui.Sound;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-
+//TODO: We should not reset the camera if the ball is gone mid camera special event.
+//TODO: Document all the constants.
 /**
  * A class representing a ball in the game.
  * The class represents both the "main" ball and the "puck" balls.
+ * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class Ball  extends GameObject {
 
@@ -25,6 +25,8 @@ public class Ball  extends GameObject {
      * @param dimensions    Width and height in window coordinates.
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
+     * @param collisionSound The sound object that contains the sound of the ball whenever it
+     *                       collides with another object.
      */
     public Ball(Vector2 topLeftCorner,
                 Vector2 dimensions,
