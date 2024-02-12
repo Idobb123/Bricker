@@ -2,7 +2,6 @@ package bricker.gameobjects;
 
 import bricker.BrickerGameManager;
 import bricker.brick_strategies.*;
-import bricker.gameobjects.*;
 import danogl.GameObject;
 import danogl.gui.*;
 import danogl.gui.rendering.RectangleRenderable;
