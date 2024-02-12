@@ -1,9 +1,9 @@
-package bricker;
+package bricker.gameobjects;
 
+import bricker.BrickerGameManager;
 import bricker.brick_strategies.*;
 import bricker.gameobjects.*;
 import danogl.GameObject;
-import danogl.collisions.Layer;
 import danogl.gui.*;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
@@ -25,13 +25,13 @@ public class ObjectFactory {
     private Counter strikeCounter;
     private Random rand;
 
-    ObjectFactory(ImageReader imageReader,
-                  SoundReader soundReader,
-                  UserInputListener inputListener,
-                  WindowController windowController,
-                  BrickerGameManager brickerGameManager,
-                  Counter brickCounter,
-                  Counter strikeCounter){
+    public ObjectFactory(ImageReader imageReader,
+                         SoundReader soundReader,
+                         UserInputListener inputListener,
+                         WindowController windowController,
+                         BrickerGameManager brickerGameManager,
+                         Counter brickCounter,
+                         Counter strikeCounter){
 
         this.imageReader = imageReader;
         this.soundReader = soundReader;

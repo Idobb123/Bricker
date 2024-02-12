@@ -1,9 +1,6 @@
 package bricker;
 
-import bricker.gameobjects.Ball;
-import bricker.gameobjects.Brick;
-import bricker.gameobjects.DuplicatePaddle;
-import bricker.gameobjects.Heart;
+import bricker.gameobjects.*;
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
