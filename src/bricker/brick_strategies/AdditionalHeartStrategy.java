@@ -31,7 +31,7 @@ public class AdditionalHeartStrategy extends StrategyDecorator{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         super.onCollision(brick, other);
-        brickerGameManager.createHeart(brick.getCenter());
+        brickerGameManager.createFallingHeart(brick.getCenter());
 
     }
 }
