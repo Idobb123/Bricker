@@ -2,7 +2,6 @@ package bricker.brick_strategies;
 
 import bricker.BrickerGameManager;
 import danogl.GameObject;
-import danogl.util.Vector2;
 /**
  * A class representing a strategy that creates two "puck" balls by braking a brick with this strategy.
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher

@@ -13,8 +13,6 @@ public class Heart extends GameObject {
 
     private Counter strikeCounter;
     private BrickerGameManager brickerGameManager;
-    private GameObject[] hearts;
-
 
 
     /**
