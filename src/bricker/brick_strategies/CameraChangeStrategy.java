@@ -15,7 +15,6 @@ public class CameraChangeStrategy extends StrategyDecorator{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         super.onCollision(brick, other);
-            brickerGameManager.deleteObject(brick, Layer.STATIC_OBJECTS);
             if (other == brickerGameManager.getBall() && brickerGameManager.camera() == null)
                 brickerGameManager.setCameraToBall();
     }

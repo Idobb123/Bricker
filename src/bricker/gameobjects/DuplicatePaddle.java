@@ -11,6 +11,8 @@ import danogl.util.Vector2;
 public class DuplicatePaddle extends Paddle{
     private final Counter hitCounter;
     private final BrickerGameManager brickerGameManager;
+
+    private static final String ORIGINAL_BALL_TAG = "originalBall";
     /**
      * Construct a new GameObject instance.
      *
@@ -21,7 +23,7 @@ public class DuplicatePaddle extends Paddle{
      *                      the GameObject will not be rendered.
      * @param inputListener
      */
-    public DuplicatePaddle(Vector2 topLeftCorner, // TODO: Should we delete this?
+    public DuplicatePaddle(Vector2 topLeftCorner,
                            Vector2 dimensions,
                            Renderable renderable,
                            UserInputListener inputListener,
@@ -35,7 +37,7 @@ public class DuplicatePaddle extends Paddle{
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if (other instanceof Ball) // cyber TODO: use tags instead of instanceof
+        if (other.getTag().equals(ORIGINAL_BALL_TAG)) // cyber
             hitCounter.increment();
         if (hitCounter.value() >= 4) {
             brickerGameManager.deleteObject(this);

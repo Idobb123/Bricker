@@ -2,7 +2,8 @@ package bricker.brick_strategies;
 
 import danogl.GameObject;
 
-public abstract class StrategyDecorator implements CollisionStrategy{
+//TODO -> if protected is possible than change brickgamemanager to protected and simplify
+public abstract class StrategyDecorator implements CollisionStrategy {
     private CollisionStrategy collisionStrategy;
 
     public StrategyDecorator(CollisionStrategy collisionStrategy) {

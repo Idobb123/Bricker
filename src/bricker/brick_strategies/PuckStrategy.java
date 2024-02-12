@@ -14,7 +14,6 @@ public class PuckStrategy extends StrategyDecorator{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         super.onCollision(brick, other);
-        brickerGameManager.deleteObject(brick, Layer.STATIC_OBJECTS);
         brickerGameManager.createPuck(brick.getCenter());
         brickerGameManager.createPuck(brick.getCenter());
     }

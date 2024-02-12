@@ -25,6 +25,8 @@ public class BrickerGameManager extends GameManager {
     private static final int TARGET_FRAME_RATE = 40;
     private static final float HEART_FALLING_SPEED = 100;
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
+    private static final String DUPLICATE_PADDLE_TAG = "duplicatePaddle";
+    private static final String ORIGINAL_BALL_TAG = "originalBall";
     private static int DEFAULT_STRIKES_LEFT = 3;
     private static float WALL_WIDTH = 6;
     private static float BRICK_SPACE = 2;
@@ -178,6 +180,7 @@ public class BrickerGameManager extends GameManager {
         }
         Vector2 velocity = new Vector2(ballSpeedX, ballSpeedY);
         this.ball = objectFactory.createBall(ballLocation, velocity, BallType.REGULAR);
+        this.ball.setTag(ORIGINAL_BALL_TAG);
         this.gameObjects().addGameObject(ball);
     }
 
@@ -222,9 +225,9 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().addGameObject(strikeNumberDisplay, Layer.UI);
     }
 
-    public void addHeart() { // TODO: Maybe change to private
+    public void addHeart() {
         Vector2 windowDimensions = windowController.getWindowDimensions();
-        int heartIndex = strikeCounter.value(); // TODO Change the hearts array to 4
+        int heartIndex = strikeCounter.value();
         if (heartIndex >= MAX_HEARTS) {
             return;
         }
@@ -251,19 +254,20 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().addGameObject(ball);
     }
 
-    public void createDuplicatePaddle() {
+    public void createDuplicatePaddle() { // TODO: maybe delete duplicatePaddle class, problems with making the original disappear
         if (checkForDuplicatePaddle()) {
             return;
         }
         Vector2 windowDimensions = windowController.getWindowDimensions();
         Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, windowDimensions.y()/2);
         GameObject duplicatePaddle = objectFactory.createDuplicatePaddle(paddleLocation, windowDimensions.x());
+        duplicatePaddle.setTag(DUPLICATE_PADDLE_TAG);
         this.gameObjects().addGameObject(duplicatePaddle);
     }
 
     private boolean checkForDuplicatePaddle() {
         for (GameObject object : this.gameObjects()) {
-            if (object instanceof DuplicatePaddle) { // TODO: change to using tags
+            if (object.getTag().equals(DUPLICATE_PADDLE_TAG)) {
                 return true;
             }
         }
