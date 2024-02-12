@@ -1,5 +1,4 @@
 package bricker;
-//TODO: give credit for using the images and sounds.
 import bricker.gameobjects.*;
 import danogl.GameManager;
 import danogl.GameObject;
@@ -14,6 +13,7 @@ import danogl.util.Vector2;
 
 import java.awt.event.KeyEvent;
 import java.util.Random;
+//TODO: give credit for using the images and sounds.
 
 /**
  * A class that manages the run of a Bricker game. relies upon the GameManager of the DanoGameLabs library.
