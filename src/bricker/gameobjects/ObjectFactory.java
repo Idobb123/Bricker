@@ -137,50 +137,26 @@ public class ObjectFactory {
             case ADDITIONAL_HEART:
                 return new AdditionalHeartStrategy(strategy, brickerGameManager);
             case DOUBLE_STRATEGY:
-                int[] strategyIntegers = chooseDoubleStrategies();
-                for (int currentStratInt : strategyIntegers) {
-                    strategy = chooseStrategyBasedOnInt(BrickStrategyEnum.values()[currentStratInt], strategy);
+                BrickStrategyEnum[] strategyIntegers = chooseDoubleStrategies();
+                for (BrickStrategyEnum currentStratInt : strategyIntegers) {
+                    strategy = chooseStrategyBasedOnInt(currentStratInt, strategy);
                 }
                 return strategy;
             default:
                 return strategy;
         }
     }
-//
-//    private CollisionStrategy chooseStrategyBasedOnInt(int stratInt, CollisionStrategy strategy) {
-//        switch (stratInt) { // TODO: Change to Enum.
-//            case 5:
-//                strategy = new PuckStrategy(strategy,brickerGameManager);
-//                break;
-//            case 6:
-//                strategy = new AdditionalPaddleStrategy(strategy, brickerGameManager);
-//                break;
-//            case 7:
-//                strategy = new CameraChangeStrategy(strategy, brickerGameManager);
-//                break;
-//            case 8:
-//                strategy = new AdditionalHeartStrategy(strategy, brickerGameManager);
-//                break;
-//            case 9:
-//                int[] strategyIntegers = chooseDoubleStrategies();
-//                for (int currentStratInt: strategyIntegers){
-//                    strategy = chooseStrategyBasedOnInt(currentStratInt, strategy);
-//                }
-//                break;
-//        }
-//        return strategy;
-//
-//    }
-    private int[] chooseDoubleStrategies(){ // TODO: Ask what should happen if initial choice is 2 doubles...
-        int stratInt1 = rand.nextInt(5) ;
-        int stratInt2 = rand.nextInt(5);
-        if (stratInt1 == 4 || stratInt2 == 4){
-            int[] behaviours =  {rand.nextInt(4),
-                    rand.nextInt(4) ,
-                    rand.nextInt(4)};
+    private BrickStrategyEnum[] chooseDoubleStrategies(){ // TODO: Ask what should happen if initial choice is 2 doubles...
+        BrickStrategyEnum[] strategyTypes = BrickStrategyEnum.values();
+        BrickStrategyEnum randomStrategyType1 = strategyTypes[rand.nextInt(5)];
+        BrickStrategyEnum randomStrategyType2 = strategyTypes[rand.nextInt(5)];
+        if (randomStrategyType1 == BrickStrategyEnum.DOUBLE_STRATEGY || randomStrategyType2 == BrickStrategyEnum.DOUBLE_STRATEGY){
+            BrickStrategyEnum[] behaviours =  {strategyTypes[rand.nextInt(4)],
+                    strategyTypes[rand.nextInt(4)],
+                    strategyTypes[rand.nextInt(4)]};
             return behaviours;
         }
 
-        return new int[]{stratInt1, stratInt2};
+        return new BrickStrategyEnum[]{randomStrategyType1, randomStrategyType2};
     }
 }

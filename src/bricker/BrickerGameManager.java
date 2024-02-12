@@ -32,13 +32,11 @@ public class BrickerGameManager extends GameManager {
     private static float BRICK_SPACE = 2;
     private static float BRICK_HEIGHT = 15;
     private static int MAX_HEARTS = 4;
-    private static float BALL_SPEED = 300;
+    private static float BALL_SPEED = 200;
     private Random rand = new Random();
     private int bricksPerRow;
     private int numberOfRows;
     private WindowController windowController;
-    private ImageReader imageReader;
-    private SoundReader soundReader;
     private UserInputListener inputListener;
     private Ball ball;
     private Counter strikeCounter;
@@ -97,8 +95,6 @@ public class BrickerGameManager extends GameManager {
                                UserInputListener inputListener,
                                WindowController windowController) {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
-        this.imageReader = imageReader;
-        this.soundReader = soundReader;
         this.inputListener = inputListener;
         this.windowController = windowController; // like in the videos, but for everything
         this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
