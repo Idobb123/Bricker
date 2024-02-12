@@ -21,12 +21,13 @@ public class DuplicatePaddle extends Paddle{
      *                      the GameObject will not be rendered.
      * @param inputListener
      */
-    public DuplicatePaddle(Vector2 topLeftCorner,
+    public DuplicatePaddle(Vector2 topLeftCorner, // TODO: Should we delete this?
                            Vector2 dimensions,
                            Renderable renderable,
                            UserInputListener inputListener,
-                           BrickerGameManager brickerGameManager) {
-        super(topLeftCorner, dimensions, renderable, inputListener);
+                           BrickerGameManager brickerGameManager,
+                           float windowWidth) {
+        super(topLeftCorner, dimensions, renderable, inputListener, windowWidth);
         this.hitCounter = new Counter();
         this.brickerGameManager = brickerGameManager;
     }

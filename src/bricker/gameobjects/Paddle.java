@@ -9,8 +9,8 @@ import java.awt.event.KeyEvent;
 
 public class Paddle extends GameObject {
     private static final float MOVEMENT_SPEED = 300;
-    private static final float WINDOW_DIM = 700; // TODO: Figure out how to get rid of this constant
     private final UserInputListener inputListener;
+    private final float windowWidth;
 
     /**
      * Construct a new GameObject instance.
@@ -22,9 +22,10 @@ public class Paddle extends GameObject {
      *                      the GameObject will not be rendered.
      * @param inputListener
      */
-    public Paddle(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable, UserInputListener inputListener) {
+    public Paddle(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable, UserInputListener inputListener, float windowWidth) {
         super(topLeftCorner, dimensions, renderable);
         this.inputListener = inputListener;
+        this.windowWidth = windowWidth;
     }
 
     @Override
@@ -42,8 +43,8 @@ public class Paddle extends GameObject {
         if (getTopLeftCorner().x() < 0){
             setTopLeftCorner(new Vector2(0, getTopLeftCorner().y()));
         }
-        if ((getTopLeftCorner().x() + this.getDimensions().x()) > WINDOW_DIM){
-            setTopLeftCorner(new Vector2(WINDOW_DIM - this.getDimensions().x(), getTopLeftCorner().y()));
+        if ((getTopLeftCorner().x() + this.getDimensions().x()) > windowWidth){
+            setTopLeftCorner(new Vector2(windowWidth - this.getDimensions().x(), getTopLeftCorner().y()));
         }
     }
 }

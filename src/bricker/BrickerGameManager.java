@@ -161,7 +161,7 @@ public class BrickerGameManager extends GameManager {
 
     private void createPaddle(Vector2 windowDimensions) {
         Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, (int) windowDimensions.y() - 30);
-        GameObject paddle = objectFactory.createPaddle(paddleLocation);
+        GameObject paddle = objectFactory.createPaddle(paddleLocation, windowDimensions.x());
         paddle.setTag(ORIGINAL_PADDLE_TAG);
         this.gameObjects().addGameObject(paddle);
     }
@@ -257,7 +257,7 @@ public class BrickerGameManager extends GameManager {
         }
         Vector2 windowDimensions = windowController.getWindowDimensions();
         Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, windowDimensions.y()/2);
-        GameObject duplicatePaddle = objectFactory.createDuplicatePaddle(paddleLocation);
+        GameObject duplicatePaddle = objectFactory.createDuplicatePaddle(paddleLocation, windowDimensions.x());
         this.gameObjects().addGameObject(duplicatePaddle);
     }
 

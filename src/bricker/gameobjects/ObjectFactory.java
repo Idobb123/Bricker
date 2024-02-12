@@ -57,17 +57,17 @@ public class ObjectFactory {
         return strikeNumberDisplay;
     }
 
-    public Paddle createPaddle(Vector2 paddleLocation){
+    public Paddle createPaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
-        Paddle paddle = new Paddle(Vector2.ZERO, new Vector2(200, 20), paddleImage, inputListener);
+        Paddle paddle = new Paddle(Vector2.ZERO, new Vector2(200, 20), paddleImage, inputListener, windowWidth);
         paddle.setCenter(paddleLocation);
         return paddle;
     }
 
-    public DuplicatePaddle createDuplicatePaddle(Vector2 paddleLocation){
+    public DuplicatePaddle createDuplicatePaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
         DuplicatePaddle duplicatePaddle = new DuplicatePaddle(Vector2.ZERO, new Vector2(200, 20),
-                paddleImage, inputListener, brickerGameManager );
+                paddleImage, inputListener, brickerGameManager, windowWidth );
         duplicatePaddle.setCenter(paddleLocation);
         return duplicatePaddle;
     }

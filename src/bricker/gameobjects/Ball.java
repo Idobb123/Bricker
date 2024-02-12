@@ -1,5 +1,7 @@
 package bricker.gameobjects;
-
+//TODO: Check we start counting 4 hits for puck ball not including brick braking
+//TODO: We should not reset the camera if the ball is gone mid camera special event.
+//TODO: Document all the constants.
 import danogl.GameObject;
 import danogl.collisions.Collision;
 import danogl.gui.Sound;
