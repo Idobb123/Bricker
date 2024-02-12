@@ -7,6 +7,10 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Counter;
 import danogl.util.Vector2;
 
+/**
+ * A class representing a brick in the game.
+ * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
+ */
 public class Brick extends GameObject {
 
     private CollisionStrategy collisionStrategy;
@@ -30,7 +34,15 @@ public class Brick extends GameObject {
         this.collisionStrategy = collisionStrategy;
         this.hitCounter = hitCounter;
     }
-
+    /**
+     * The function is called whenever an object collides with the brick.
+     * It calls the onCollision method of its collision strategy therefore applying the strategy.
+     * The function the decrease the hit counter by one.
+     * @param other The GameObject with which a collision occurred.
+     * @param collision Information regarding this collision.
+     *                  A reasonable elastic behavior can be achieved with:
+     *                  setVelocity(getVelocity().flipped(collision.getNormal()));
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         collisionStrategy.onCollision(this,other);
