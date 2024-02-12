@@ -18,7 +18,7 @@ public class TemporaryPaddle extends Paddle{
 
     private static final String ORIGINAL_BALL_TAG = "originalBall";
     /**
-     * Construct a new TemporaryPaddle instance.
+     * Constructs a new TemporaryPaddle instance.
      *
      * @param topLeftCorner Position of the object, in window coordinates (pixels).
      *                      Note that (0,0) is the top-left corner of the window.
@@ -26,6 +26,8 @@ public class TemporaryPaddle extends Paddle{
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
      * @param inputListener The input listener instance that is in charge of processing the keyboard arguments.
+     * @param brickerGameManager The bricker game manager.
+     * @param windowWidth The width of the game window.
      */
     public TemporaryPaddle(Vector2 topLeftCorner,
                            Vector2 dimensions,
@@ -39,9 +41,10 @@ public class TemporaryPaddle extends Paddle{
     }
     /**
      * The function is called whenever an object collides with the temporary paddle.
-     * It calls the onCollision method of its collision strategy therefore applying the strategy.
-     * The function then increments the hit counter by one.
-     * if the hit counter is equal or greater than 4 (aka after 4 hits) the object uses brickerGamerManager to delete itself.
+     * It calls the onCollisionEnter of it super class.
+     * After that, if the object that collided with the TemporaryPaddle is the original ball.
+     * it increases the hitCounter.
+     * In case it reached the maximal hits allowed (4) it deletes itself using the bricker game manager.
      * @param other The GameObject with which a collision occurred.
      * @param collision Information regarding this collision.
      *                  A reasonable elastic behavior can be achieved with:
@@ -50,7 +53,7 @@ public class TemporaryPaddle extends Paddle{
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if (other.getTag().equals(ORIGINAL_BALL_TAG)) // cyber
+        if (other.getTag().equals(ORIGINAL_BALL_TAG))
             hitCounter.increment();
         if (hitCounter.value() >= 4) {
             brickerGameManager.deleteObject(this);
