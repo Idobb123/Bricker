@@ -2,7 +2,6 @@ package bricker.brick_strategies;
 
 import bricker.BrickerGameManager;
 import danogl.GameObject;
-import danogl.collisions.Layer;
 
 /**
  * A class representing a strategy that allows the user to gain an extra heart by braking a brick with this strategy.

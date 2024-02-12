@@ -28,7 +28,7 @@ public class BrickerGameManager extends GameManager {
     private static final String DUPLICATE_PADDLE_TAG = "duplicatePaddle";
     private static final String ORIGINAL_BALL_TAG = "originalBall";
     private static int DEFAULT_STRIKES_LEFT = 3;
-    private static float WALL_WIDTH = 6;
+    private static float WALL_WIDTH = 15;
     private static float BRICK_SPACE = 2;
     private static float BRICK_HEIGHT = 15;
     private static int MAX_HEARTS = 4;
@@ -44,7 +44,6 @@ public class BrickerGameManager extends GameManager {
     private Counter strikeCounter;
     private Counter brickCounter;
     private Heart[] hearts;
-
     private GameObject strikeNumberDisplay;
     private ObjectFactory objectFactory;
     private int cameraSetBricksLeft;
@@ -70,6 +69,8 @@ public class BrickerGameManager extends GameManager {
     public static void main(String[] args) {
         BrickerGameManager gameManager = new BrickerGameManager("Bricker",
                 new Vector2(700, 500));
+//        BrickerGameManager gameManager = new BrickerGameManager("Bricker",
+//                new Vector2(700, 500),3 ,3 );
         gameManager.run();
     }
 
@@ -186,8 +187,8 @@ public class BrickerGameManager extends GameManager {
 
     private void buildWalls(Vector2 windowDimensions) {
         GameObject leftWall = objectFactory.createWall(Vector2.ZERO, new Vector2(WALL_WIDTH, windowDimensions.y()));
-        GameObject rightWall = objectFactory.createWall(new Vector2(windowDimensions.x() - 6, 0), new Vector2(6, windowDimensions.y()));
-        GameObject upperWall = objectFactory.createWall(Vector2.ZERO, new Vector2(windowDimensions.x(), 6));
+        GameObject rightWall = objectFactory.createWall(new Vector2(windowDimensions.x() - WALL_WIDTH, 0), new Vector2(WALL_WIDTH, windowDimensions.y()));
+        GameObject upperWall = objectFactory.createWall(Vector2.ZERO, new Vector2(windowDimensions.x(), WALL_WIDTH));
         this.gameObjects().addGameObject(leftWall);
         this.gameObjects().addGameObject(rightWall);
         this.gameObjects().addGameObject(upperWall);
