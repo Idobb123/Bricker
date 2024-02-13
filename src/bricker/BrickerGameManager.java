@@ -153,7 +153,7 @@ public class BrickerGameManager extends GameManager {
      * @param inputListener Contains a single method: isKeyPressed, which returns whether
      *                      a given key is currently pressed by the user or not. See its
      *                      documentation.
-     * @param windowController Contains an array of helpful, self explanatory methods
+     * @param windowController Contains an array of helpful, self-explanatory methods
      *                         concerning the window.
      */
     @Override

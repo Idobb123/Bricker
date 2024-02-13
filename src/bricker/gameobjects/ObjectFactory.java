@@ -31,6 +31,16 @@ public class ObjectFactory {
     private Counter strikeCounter;
     private Random rand;
 
+    /**
+     * A constructor that creates a factory that wraps the creation of game objects.
+     * @param imageReader An object that reads the images.
+     * @param soundReader An object that reads the sound.
+     * @param inputListener The input listener instance that is in charge of processing the keyboard arguments.
+     * @param windowController Contains an array of helpful, self-explanatory methods concerning the window.
+     * @param brickerGameManager The bricker game manager.
+     * @param bricksLeftCounter A counter containing how many bricks are still "in the game".
+     * @param strikeCounter A counter containing how many strikes left.
+     */
     public ObjectFactory(ImageReader imageReader,
                          SoundReader soundReader,
                          UserInputListener inputListener,
@@ -48,6 +58,12 @@ public class ObjectFactory {
         this.strikeCounter = strikeCounter;
         this.rand = new Random();
     }
+
+    /**
+     * Creates a heart object instance.
+     * @param heartLocation The location of the heart (center).
+     * @return The created heart object instance.
+     */
     public Heart createHeart(Vector2 heartLocation){
         Renderable heartImage = this.imageReader.readImage("assets/heart.png", true);
         Heart heart = new Heart(Vector2.ZERO, new Vector2(15, 15),
@@ -55,6 +71,12 @@ public class ObjectFactory {
         heart.setCenter(heartLocation);
         return heart;
     }
+
+    /**
+     * Creates a text object instance.
+     * @param textLocation The location of the text (center).
+     * @return The created text object instance.
+     */
     public GameObject createStrikeNumberDisplay(Vector2 textLocation){
         TextRenderable strikeText = new TextRenderable(String.valueOf(strikeCounter.value()));
         strikeText.setColor(getStrikeNumberDisplayColor());
@@ -63,6 +85,12 @@ public class ObjectFactory {
         return strikeNumberDisplay;
     }
 
+    /**
+     * Creates a paddle object instance.
+     * @param paddleLocation The location of the paddle (center).
+     * @param windowWidth The window width.
+     * @return The created paddle object instance.
+     */
     public Paddle createPaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
         Paddle paddle = new Paddle(Vector2.ZERO, new Vector2(200, 20), paddleImage, inputListener, windowWidth);
@@ -70,6 +98,12 @@ public class ObjectFactory {
         return paddle;
     }
 
+    /**
+     * Creates a temporary paddle instance.
+     * @param paddleLocation The location of the paddle (center).
+     * @param windowWidth The window width.
+     * @return Returns the created TemporaryPaddle object instance.
+     */
     public TemporaryPaddle createTemporaryPaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
         TemporaryPaddle temporaryPaddle = new TemporaryPaddle(Vector2.ZERO, new Vector2(200, 20),
@@ -77,6 +111,14 @@ public class ObjectFactory {
         temporaryPaddle.setCenter(paddleLocation);
         return temporaryPaddle;
     }
+
+    /**
+     * Creates a ball instance.
+     * @param ballLocation The location of the created ball (center).
+     * @param velocity The velocity of the ball.
+     * @param ballType The type of the ball (whether it is a puck or a regular ball).
+     * @return The created ball instance.
+     */
     public Ball createBall(Vector2 ballLocation, Vector2 velocity, BallType ballType){
         Renderable ballImage = null;
         Vector2 ballSize = new Vector2(20, 20);
@@ -95,15 +137,29 @@ public class ObjectFactory {
         ball.setCenter(ballLocation);
         return ball;
     }
+
+    /**
+     * Creates a background object instance.
+     * @param windowDimensions The window dimensions.
+     * @return The created background object instance.
+     */
     public GameObject createBackGround(Vector2 windowDimensions){
         Renderable backgroundImage = imageReader.readImage("assets/DARK_BG2_small.jpeg", false);
         GameObject background = new GameObject(Vector2.ZERO, windowDimensions,backgroundImage);
-        // background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
+        // background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES); //TODO: Do we need to use this?
         return background;
     }
+
+    /**
+     * Creates a GameObject instance representing a wall.
+     * @param wallLocation The location of the wall (top left corner!).
+     * @param wallDimensions The wall's dimensions.
+     * @return The created wall.
+     */
     public GameObject createWall(Vector2 wallLocation, Vector2 wallDimensions){
-        return new GameObject(wallLocation, wallDimensions, new RectangleRenderable(null));
+        return new GameObject(wallLocation, wallDimensions, new RectangleRenderable(null));  //TODO: Change it to no color somwhow.
     }
+    //TODO: Document this methods.
     private Color getStrikeNumberDisplayColor() {
         if (strikeCounter.value() == 2) {
             return Color.yellow;
