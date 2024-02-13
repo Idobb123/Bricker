@@ -17,7 +17,6 @@ import java.util.Random;
 //TODO: note that private functions are documented in the correct format.
 /**
  * A factory class that handles the creation of all the game objects.
- *
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class ObjectFactory {
