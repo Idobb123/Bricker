@@ -1,6 +1,6 @@
 package bricker.brick_strategies;
 
-import bricker.BrickerGameManager;
+import bricker.main.BrickerGameManager;
 import danogl.GameObject;
 
 /**
@@ -9,16 +9,17 @@ import danogl.GameObject;
  */
 public class AdditionalPaddleStrategy extends StrategyDecorator{
 
-    private final BrickerGameManager brickerGameManager;
+    private final BrickerGameManager BrickerGameManager;
     /**
      * Creates an instance for the additional paddle strategy.
      * The class also applies any other strategy given.
      * @param collisionStrategy Another collision strategy to apply.
-     * @param brickerGameManager The game manager instance.
+     * @param BrickerGameManager The game manager instance.
      */
-    public AdditionalPaddleStrategy(CollisionStrategy collisionStrategy, BrickerGameManager brickerGameManager) {
+    public AdditionalPaddleStrategy(CollisionStrategy collisionStrategy,
+                                    BrickerGameManager BrickerGameManager) {
         super(collisionStrategy);
-        this.brickerGameManager = brickerGameManager;
+        this.BrickerGameManager = BrickerGameManager;
     }
     /**
      * The function is responsible for applying the class strategy on a given brick when called.
@@ -30,6 +31,6 @@ public class AdditionalPaddleStrategy extends StrategyDecorator{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         super.onCollision(brick, other);
-        brickerGameManager.createTemporaryPaddle();
+        BrickerGameManager.createTemporaryPaddle();
     }
 }

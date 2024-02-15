@@ -1,6 +1,6 @@
 package bricker.gameobjects;
 
-import bricker.BrickerGameManager;
+import bricker.main.BrickerGameManager;
 import danogl.GameObject;
 import danogl.collisions.Collision;
 import danogl.collisions.Layer;
@@ -16,7 +16,7 @@ public class Heart extends GameObject {
     /** the object tag for the player's paddle*/
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
     private Counter strikeCounter;
-    private BrickerGameManager brickerGameManager;
+    private BrickerGameManager BrickerGameManager;
 
     /**
      * Construct a new Heart instance.
@@ -27,16 +27,16 @@ public class Heart extends GameObject {
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
      * @param strikeCounter A counter containing how many strikes left.
-     * @param brickerGameManager The bricker game manager.
+     * @param BrickerGameManager The bricker game manager.
      */
     public Heart(Vector2 topLeftCorner,
                  Vector2 dimensions,
                  Renderable renderable,
                  Counter strikeCounter,
-                 BrickerGameManager brickerGameManager) {
+                 BrickerGameManager BrickerGameManager) {
         super(topLeftCorner, dimensions, renderable);
         this.strikeCounter = strikeCounter;
-        this.brickerGameManager = brickerGameManager;
+        this.BrickerGameManager = BrickerGameManager;
     }
 
     /**
@@ -44,7 +44,7 @@ public class Heart extends GameObject {
      */
     public void deleteHeart() {
         strikeCounter.decrement();
-        brickerGameManager.deleteObject(this, Layer.UI);
+        BrickerGameManager.deleteObject(this, Layer.UI);
     }
 
     /**
@@ -57,8 +57,8 @@ public class Heart extends GameObject {
      */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
-        brickerGameManager.addHeart();
-        brickerGameManager.deleteObject(this);
+        BrickerGameManager.addHeart();
+        BrickerGameManager.deleteObject(this);
     }
 
     /**

@@ -1,6 +1,6 @@
 package bricker.gameobjects;
 
-import bricker.BrickerGameManager;
+import bricker.main.BrickerGameManager;
 import danogl.GameObject;
 import danogl.collisions.Collision;
 import danogl.gui.UserInputListener;
@@ -18,7 +18,7 @@ public class TemporaryPaddle extends Paddle{
     /** The tag of the "regular" ball */
     private static final String ORIGINAL_BALL_TAG = "regularBall";
     private final Counter hitCounter;
-    private final BrickerGameManager brickerGameManager;
+    private final BrickerGameManager BrickerGameManager;
     /**
      * Constructs a new TemporaryPaddle instance.
      *
@@ -28,18 +28,18 @@ public class TemporaryPaddle extends Paddle{
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
      * @param inputListener The input listener instance that is in charge of processing the keyboard arguments.
-     * @param brickerGameManager The bricker game manager.
+     * @param BrickerGameManager The bricker game manager.
      * @param windowWidth The width of the game window.
      */
     public TemporaryPaddle(Vector2 topLeftCorner,
                            Vector2 dimensions,
                            Renderable renderable,
                            UserInputListener inputListener,
-                           BrickerGameManager brickerGameManager,
+                           BrickerGameManager BrickerGameManager,
                            float windowWidth) {
         super(topLeftCorner, dimensions, renderable, inputListener, windowWidth);
         this.hitCounter = new Counter();
-        this.brickerGameManager = brickerGameManager;
+        this.BrickerGameManager = BrickerGameManager;
     }
     /**
      * The function is called whenever an object collides with the temporary paddle.
@@ -58,7 +58,7 @@ public class TemporaryPaddle extends Paddle{
         if (other.getTag().equals(ORIGINAL_BALL_TAG))
             hitCounter.increment();
         if (hitCounter.value() >= MAXIMAL_HITS_ALLOWED) {
-            brickerGameManager.deleteObject(this);
+            BrickerGameManager.deleteObject(this);
         }
     }
 }

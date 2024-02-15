@@ -1,6 +1,6 @@
 package bricker.brick_strategies;
 
-import bricker.BrickerGameManager;
+import bricker.main.BrickerGameManager;
 import danogl.GameObject;
 
 /**
@@ -8,16 +8,16 @@ import danogl.GameObject;
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class PuckStrategy extends StrategyDecorator{
-    private BrickerGameManager brickerGameManager;
+    private BrickerGameManager BrickerGameManager;
     /**
      * Creates an instance for the additional "puck balls" strategy.
      * The class also applies any other strategy given.
      * @param collisionStrategy Another collision strategy to apply.
-     * @param brickerGameManager The game manager instance.
+     * @param BrickerGameManager The game manager instance.
      */
-    public PuckStrategy(CollisionStrategy collisionStrategy,BrickerGameManager brickerGameManager) {
+    public PuckStrategy(CollisionStrategy collisionStrategy, BrickerGameManager BrickerGameManager) {
         super(collisionStrategy);
-        this.brickerGameManager = brickerGameManager;
+        this.BrickerGameManager = BrickerGameManager;
     }
     /**
      * The function is responsible for applying the class strategy on a given brick when called.
@@ -29,7 +29,7 @@ public class PuckStrategy extends StrategyDecorator{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         super.onCollision(brick, other);
-        brickerGameManager.createPuck(brick.getCenter());
-        brickerGameManager.createPuck(brick.getCenter());
+        BrickerGameManager.createPuck(brick.getCenter());
+        BrickerGameManager.createPuck(brick.getCenter());
     }
 }

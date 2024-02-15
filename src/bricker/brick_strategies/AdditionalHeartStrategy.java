@@ -1,24 +1,26 @@
 package bricker.brick_strategies;
 
-import bricker.BrickerGameManager;
+import bricker.main.BrickerGameManager;
 import danogl.GameObject;
 
 /**
- * A class representing a strategy that allows the user to gain an extra heart by braking a brick with this strategy.
+ * A class representing a strategy that allows the user to gain an extra heart,
+ * by braking a brick with this strategy.
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class AdditionalHeartStrategy extends StrategyDecorator{
-    private BrickerGameManager brickerGameManager;
+    private BrickerGameManager BrickerGameManager;
 
     /**
      * Creates an instance for the additional heart strategy.
      * The class also applies any other strategy given.
      * @param collisionStrategy Another collision strategy to apply.
-     * @param brickerGameManager The game manager instance.
+     * @param BrickerGameManager The game manager instance.
      */
-    public AdditionalHeartStrategy(CollisionStrategy collisionStrategy, BrickerGameManager brickerGameManager) {
+    public AdditionalHeartStrategy(CollisionStrategy collisionStrategy,
+                                   BrickerGameManager BrickerGameManager) {
         super(collisionStrategy);
-        this.brickerGameManager = brickerGameManager;
+        this.BrickerGameManager = BrickerGameManager;
     }
 
     /**
@@ -31,7 +33,7 @@ public class AdditionalHeartStrategy extends StrategyDecorator{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         super.onCollision(brick, other);
-        brickerGameManager.createFallingHeart(brick.getCenter());
+        BrickerGameManager.createFallingHeart(brick.getCenter());
 
     }
 }

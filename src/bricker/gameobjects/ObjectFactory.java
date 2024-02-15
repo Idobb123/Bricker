@@ -1,6 +1,6 @@
 package bricker.gameobjects;
 
-import bricker.BrickerGameManager;
+import bricker.main.BrickerGameManager;
 import bricker.brick_strategies.*;
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
@@ -45,7 +45,7 @@ public class ObjectFactory {
     private ImageReader imageReader;
     private SoundReader soundReader;
     private UserInputListener inputListener;
-    private final BrickerGameManager brickerGameManager;
+    private final BrickerGameManager BrickerGameManager;
     private Counter bricksLeftCounter;
     private Counter strikeCounter;
     private Random rand;
@@ -55,21 +55,21 @@ public class ObjectFactory {
      * @param imageReader An object that reads the images.
      * @param soundReader An object that reads the sound.
      * @param inputListener The input listener instance that is in charge of processing the keyboard arguments.
-     * @param brickerGameManager The bricker game manager.
+     * @param BrickerGameManager The bricker game manager.
      * @param bricksLeftCounter A counter containing how many bricks are still "in the game".
      * @param strikeCounter A counter containing how many strikes left.
      */
     public ObjectFactory(ImageReader imageReader,
                          SoundReader soundReader,
                          UserInputListener inputListener,
-                         BrickerGameManager brickerGameManager,
+                         BrickerGameManager BrickerGameManager,
                          Counter bricksLeftCounter,
                          Counter strikeCounter){
 
         this.imageReader = imageReader;
         this.soundReader = soundReader;
         this.inputListener = inputListener;
-        this.brickerGameManager = brickerGameManager;
+        this.BrickerGameManager = BrickerGameManager;
         this.bricksLeftCounter = bricksLeftCounter;
         this.strikeCounter = strikeCounter;
         this.rand = new Random();
@@ -83,7 +83,7 @@ public class ObjectFactory {
     public Heart createHeart(Vector2 heartLocation){
         Renderable heartImage = this.imageReader.readImage("assets/heart.png", true);
         Heart heart = new Heart(Vector2.ZERO, new Vector2(HEART_WIDTH_AND_HEIGHT, HEART_WIDTH_AND_HEIGHT),
-                heartImage, strikeCounter, brickerGameManager);
+                heartImage, strikeCounter, BrickerGameManager);
         heart.setCenter(heartLocation);
         return heart;
     }
@@ -122,8 +122,9 @@ public class ObjectFactory {
      */
     public TemporaryPaddle createTemporaryPaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
-        TemporaryPaddle temporaryPaddle = new TemporaryPaddle(Vector2.ZERO, new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
-                paddleImage, inputListener, brickerGameManager, windowWidth );
+        TemporaryPaddle temporaryPaddle = new TemporaryPaddle(Vector2.ZERO,
+                new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
+                paddleImage, inputListener, BrickerGameManager, windowWidth );
         temporaryPaddle.setCenter(paddleLocation);
         return temporaryPaddle;
     }
@@ -202,7 +203,9 @@ public class ObjectFactory {
     public Brick createBrick(Vector2 brickLocation, float brickWidth) {
         CollisionStrategy strategy = generateStrategy();
         Renderable brickImage = imageReader.readImage("assets/brick.png", false);
-        Brick brick = new Brick(brickLocation, new Vector2(brickWidth, BRICK_HEIGHT), brickImage,strategy, bricksLeftCounter);
+        Brick brick = new Brick(brickLocation,
+                new Vector2(brickWidth, BRICK_HEIGHT),
+                brickImage,strategy, bricksLeftCounter);
         return brick;
     }
 
@@ -212,7 +215,7 @@ public class ObjectFactory {
      * @return The instance of the created collision strategy
      */
     private CollisionStrategy generateStrategy(){
-        CollisionStrategy strategy = new BasicCollisionStrategy(brickerGameManager);
+        CollisionStrategy strategy = new BasicCollisionStrategy(BrickerGameManager);
         if (rand.nextBoolean()) {
             return strategy;
         }
@@ -230,16 +233,17 @@ public class ObjectFactory {
      * @param strategy Another strategy provided for the decorator design pattern.
      * @return The created strategy
      */
-    private CollisionStrategy chooseStrategyBasedOnEnum(SpecialBrickStrategyEnum strategyType, CollisionStrategy strategy) {
+    private CollisionStrategy chooseStrategyBasedOnEnum(SpecialBrickStrategyEnum strategyType,
+                                                        CollisionStrategy strategy) {
         switch (strategyType) {
             case PUCK:
-                return new PuckStrategy(strategy, brickerGameManager);
+                return new PuckStrategy(strategy, BrickerGameManager);
             case ADDITIONAL_PADDLE:
-                return new AdditionalPaddleStrategy(strategy, brickerGameManager);
+                return new AdditionalPaddleStrategy(strategy, BrickerGameManager);
             case CAMERA_CHANGE:
-                return new CameraChangeStrategy(strategy, brickerGameManager);
+                return new CameraChangeStrategy(strategy, BrickerGameManager);
             case ADDITIONAL_HEART:
-                return new AdditionalHeartStrategy(strategy, brickerGameManager);
+                return new AdditionalHeartStrategy(strategy, BrickerGameManager);
             case DOUBLE_STRATEGY:
                 SpecialBrickStrategyEnum[] strategyIntegers = chooseDoubleStrategies();
                 for (SpecialBrickStrategyEnum currentStratInt : strategyIntegers) {
