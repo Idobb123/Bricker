@@ -12,7 +12,7 @@ import danogl.util.Vector2;
  * A class representing a temporary paddle.
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
-public class TemporaryPaddle extends Paddle{  //TODO: Reconsider if want to use this class.
+public class TemporaryPaddle extends Paddle{
     /** the object tag for the main ball */
     private static final int MAXIMAL_HITS_ALLOWED = 4;
     /** The tag of the "regular" ball */

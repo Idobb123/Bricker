@@ -13,7 +13,7 @@ import danogl.util.Vector2;
 
 import java.awt.event.KeyEvent;
 import java.util.Random;
-
+//TODO: Create a main method that follows the rules in the ex description.
 /**
  * A class that manages the run of a Bricker game. relies upon the GameManager of the DanoGameLabs library.
  * Manages all of the objects of the game, including the background and the UI
@@ -121,8 +121,17 @@ public class BrickerGameManager extends GameManager {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        BrickerGameManager gameManager = new BrickerGameManager(WINDOW_TITLE,
-                new Vector2(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+        BrickerGameManager gameManager;
+        if(args.length == 2){
+            int columns = Integer.parseInt(args[0]);
+            int rows = Integer.parseInt(args[1]);
+            gameManager = new BrickerGameManager(WINDOW_TITLE,
+                    new Vector2(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT), columns, rows);
+        }else {
+            gameManager = new BrickerGameManager(WINDOW_TITLE,
+                    new Vector2(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT));
+        }
+
         gameManager.run();
     }
 
@@ -263,7 +272,7 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().addGameObject(temporaryPaddle);
     }
 
-    /**
+    /*
      * sets the camera to focus on the ball and increase the zoom by a bit
      */
     public void setCameraToBall() {
@@ -274,10 +283,10 @@ public class BrickerGameManager extends GameManager {
                 windowController.getWindowDimensions()));
     }
 
-    /**
+    /*
      * sets the camera back to default
      */
-    public void setCameraToDefault() {
+    private void setCameraToDefault() {
         if (this.ball.getCollisionCounter() - cameraSetBricksLeft >= BRICKS_FOR_CAMERA_CHANGE_BACK) {
             this.setCamera(null);
         }
