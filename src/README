@@ -148,12 +148,3 @@ adamflei123, idobb123
     here, in addition, the camera change back is dependent on the ball and since letting the strategy manage
     the ball will break encapsulation its good design (in our opinion) to let the GameManager handle the
     camera after the signal to change it to the ball has been received.
-
-
-
-
-
-
-
-
-
