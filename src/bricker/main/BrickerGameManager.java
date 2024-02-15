@@ -277,7 +277,7 @@ public class BrickerGameManager extends GameManager {
         this.gameObjects().addGameObject(temporaryPaddle);
     }
 
-    /*
+    /**
      * sets the camera to focus on the ball and increase the zoom by a bit
      */
     public void setCameraToBall() {

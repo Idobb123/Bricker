@@ -6,9 +6,14 @@ package bricker.gameobjects;
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public enum SpecialBrickStrategyEnum {
+    /** the enum value representing the puck strategy */
     PUCK,
+    /** the enum value representing the additional paddle strategy */
     ADDITIONAL_PADDLE,
+    /** the enum value representing the camera change strategy */
     CAMERA_CHANGE,
+    /** the enum value representing the additional heart strategy */
     ADDITIONAL_HEART,
+    /** the enum value representing the double strategy */
     DOUBLE_STRATEGY
 }
