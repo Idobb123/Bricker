@@ -28,7 +28,7 @@ public class BrickerGameManager extends GameManager {
     /** the frame-rate for the game*/
     private static final int TARGET_FRAME_RATE = 100; // TODO: check if upping the frame betters the game
     /** the speed that a heart will fall from a brick*/
-    private static final float HEART_FALLING_SPEED = 100;
+    private static final float HEART_FALLING_SPEED = 100; //TODO: put the constants in a separate class.
     /** the object tag for the player's paddle*/
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
     /** the object tag for the paddle generated from the strategy */
@@ -167,7 +167,7 @@ public class BrickerGameManager extends GameManager {
         this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
         this.bricksLeftCounter = new Counter(bricksPerRow * numberOfRows);
         this.hearts = new Heart[MAX_HEARTS];
-        this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener, windowController, this, bricksLeftCounter, strikeCounter);
+        this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener, this, bricksLeftCounter, strikeCounter);
 
         Vector2 windowDimensions = windowController.getWindowDimensions();
         windowController.setTargetFramerate(TARGET_FRAME_RATE);
@@ -421,7 +421,7 @@ public class BrickerGameManager extends GameManager {
     }
 
     /*
-     * creates the stike (hearts) number display for the game
+     * creates the strike (hearts) number display for the game
      * @param windowDimensions
      */
     private void createStrikeNumberDisplay(Vector2 windowDimensions) {

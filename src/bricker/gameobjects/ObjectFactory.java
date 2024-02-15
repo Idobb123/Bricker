@@ -3,8 +3,8 @@ package bricker.gameobjects;
 import bricker.BrickerGameManager;
 import bricker.brick_strategies.*;
 import danogl.GameObject;
+import danogl.components.CoordinateSpace;
 import danogl.gui.*;
-import danogl.gui.rendering.RectangleRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Counter;
@@ -20,11 +20,11 @@ import java.util.Random;
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class ObjectFactory {
+    /** the height of the bricks */
     private static float BRICK_HEIGHT = 15;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private UserInputListener inputListener;
-    private WindowController windowController;
     private final BrickerGameManager brickerGameManager;
     private Counter bricksLeftCounter;
     private Counter strikeCounter;
@@ -35,7 +35,6 @@ public class ObjectFactory {
      * @param imageReader An object that reads the images.
      * @param soundReader An object that reads the sound.
      * @param inputListener The input listener instance that is in charge of processing the keyboard arguments.
-     * @param windowController Contains an array of helpful, self-explanatory methods concerning the window.
      * @param brickerGameManager The bricker game manager.
      * @param bricksLeftCounter A counter containing how many bricks are still "in the game".
      * @param strikeCounter A counter containing how many strikes left.
@@ -43,7 +42,6 @@ public class ObjectFactory {
     public ObjectFactory(ImageReader imageReader,
                          SoundReader soundReader,
                          UserInputListener inputListener,
-                         WindowController windowController,
                          BrickerGameManager brickerGameManager,
                          Counter bricksLeftCounter,
                          Counter strikeCounter){
@@ -51,7 +49,6 @@ public class ObjectFactory {
         this.imageReader = imageReader;
         this.soundReader = soundReader;
         this.inputListener = inputListener;
-        this.windowController = windowController;
         this.brickerGameManager = brickerGameManager;
         this.bricksLeftCounter = bricksLeftCounter;
         this.strikeCounter = strikeCounter;
@@ -145,7 +142,7 @@ public class ObjectFactory {
     public GameObject createBackGround(Vector2 windowDimensions){
         Renderable backgroundImage = imageReader.readImage("assets/DARK_BG2_small.jpeg", false);
         GameObject background = new GameObject(Vector2.ZERO, windowDimensions,backgroundImage);
-        // background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES); //TODO: Do we need to use this?
+        background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         return background;
     }
 
@@ -156,9 +153,13 @@ public class ObjectFactory {
      * @return The created wall.
      */
     public GameObject createWall(Vector2 wallLocation, Vector2 wallDimensions){
-        return new GameObject(wallLocation, wallDimensions, new RectangleRenderable(null));  //TODO: Change it to no color somwhow.
+        return new GameObject(wallLocation, wallDimensions, null);
     }
-    //TODO: Document this methods.
+
+    /*
+     * The function returns the color of the text displaying the amount of strikes left.
+     * @return A Color to write the amount of strikes in.
+     */
     private Color getStrikeNumberDisplayColor() {
         if (strikeCounter.value() == 2) {
             return Color.yellow;
@@ -170,6 +171,13 @@ public class ObjectFactory {
             return Color.green;
         }
     }
+
+    /**
+     * The function creates a brick object in the given location with the given size.
+     * @param brickLocation The location of the center of the brick.
+     * @param brickWidth The width of the brick
+     * @return The created brick instance.
+     */
     public Brick createBrick(Vector2 brickLocation, float brickWidth) {
         CollisionStrategy strategy = generateStrategy();
         Renderable brickImage = imageReader.readImage("assets/brick.png", false);
@@ -177,7 +185,12 @@ public class ObjectFactory {
         return brick;
     }
 
-    public CollisionStrategy generateStrategy(){
+    /*
+     * Generates a collision strategy for a single brick.
+     * The strategy is chosen randomly.
+     * @return The instance of the created collision strategy
+     */
+    private CollisionStrategy generateStrategy(){
         CollisionStrategy strategy = new BasicCollisionStrategy(brickerGameManager);
         if (rand.nextBoolean()) {
             return strategy;
@@ -186,9 +199,17 @@ public class ObjectFactory {
         SpecialBrickStrategyEnum[] strategyTypes = SpecialBrickStrategyEnum.values();
         int nextStrategyNumber = rand.nextInt(5);
         SpecialBrickStrategyEnum randomStrategyType = strategyTypes[nextStrategyNumber];
-        return chooseStrategyBasedOnInt(randomStrategyType, strategy);
+        return chooseStrategyBasedOnEnum(randomStrategyType, strategy);
     }
-    private CollisionStrategy chooseStrategyBasedOnInt(SpecialBrickStrategyEnum strategyType, CollisionStrategy strategy) {
+
+    /*
+     * Given an Enum value that specifies what collision strategy to generate,
+     * the function  generates the strategy.
+     * @param strategyType The enum value specifying the strategy.
+     * @param strategy Another strategy provided for the decorator design pattern.
+     * @return The created strategy
+     */
+    private CollisionStrategy chooseStrategyBasedOnEnum(SpecialBrickStrategyEnum strategyType, CollisionStrategy strategy) {
         switch (strategyType) {
             case PUCK:
                 return new PuckStrategy(strategy, brickerGameManager);
@@ -201,13 +222,18 @@ public class ObjectFactory {
             case DOUBLE_STRATEGY:
                 SpecialBrickStrategyEnum[] strategyIntegers = chooseDoubleStrategies();
                 for (SpecialBrickStrategyEnum currentStratInt : strategyIntegers) {
-                    strategy = chooseStrategyBasedOnInt(currentStratInt, strategy);
+                    strategy = chooseStrategyBasedOnEnum(currentStratInt, strategy);
                 }
                 return strategy;
             default:
                 return strategy;
         }
     }
+
+    /*
+     * Chooses the strategies to implement in case a brick has a "double strategy".
+     * @return An Enum array containing the strategies chosen.
+     */
     private SpecialBrickStrategyEnum[] chooseDoubleStrategies(){
         SpecialBrickStrategyEnum[] strategyTypes = SpecialBrickStrategyEnum.values();
         SpecialBrickStrategyEnum randomStrategyType1 = strategyTypes[rand.nextInt(5)];
