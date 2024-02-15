@@ -10,7 +10,8 @@ import danogl.GameObject;
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class CameraChangeStrategy extends StrategyDecorator{
-
+    /** the object tag for the main ball */
+    private static final String ORIGINAL_BALL_TAG = "regularBall";
     private final BrickerGameManager BrickerGameManager;
     /**
      * Creates an instance for the camera strategy.
@@ -34,7 +35,7 @@ public class CameraChangeStrategy extends StrategyDecorator{
     @Override
     public void onCollision(GameObject brick, GameObject other) {
         super.onCollision(brick, other);
-        if (other == BrickerGameManager.getBall() && BrickerGameManager.camera() == null)
+        if (other.getTag().equals(ORIGINAL_BALL_TAG) && BrickerGameManager.camera() == null)
             BrickerGameManager.setCameraToBall();
     }
 }

@@ -109,7 +109,10 @@ public class BrickerGameManager extends GameManager {
      * @param bricksPerRow the number of bricks per row
      * @param numberOfRows the number of rows of bricks to create in the game
      */
-    public BrickerGameManager(String windowTitle, Vector2 windowDimensions, int bricksPerRow, int numberOfRows) {
+    public BrickerGameManager(String windowTitle,
+                              Vector2 windowDimensions,
+                              int bricksPerRow,
+                              int numberOfRows) {
         super(windowTitle, windowDimensions);
         this.bricksPerRow= bricksPerRow;
         this.numberOfRows = numberOfRows;
@@ -175,7 +178,8 @@ public class BrickerGameManager extends GameManager {
         this.strikeCounter = new Counter(DEFAULT_STRIKES_LEFT);
         this.bricksLeftCounter = new Counter(bricksPerRow * numberOfRows);
         this.hearts = new Heart[MAX_HEARTS];
-        this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener, this, bricksLeftCounter, strikeCounter);
+        this.objectFactory = new ObjectFactory(imageReader, soundReader, inputListener,
+                this, bricksLeftCounter, strikeCounter);
 
         Vector2 windowDimensions = windowController.getWindowDimensions();
         windowController.setTargetFramerate(TARGET_FRAME_RATE);
@@ -267,7 +271,8 @@ public class BrickerGameManager extends GameManager {
         }
         Vector2 windowDimensions = windowController.getWindowDimensions();
         Vector2 paddleLocation = windowDimensions.mult(MIDDLE_OF_THE_SCREEN_FACTOR);
-        GameObject temporaryPaddle = objectFactory.createTemporaryPaddle(paddleLocation, windowDimensions.x());
+        GameObject temporaryPaddle = objectFactory.createTemporaryPaddle(paddleLocation,
+                windowDimensions.x());
         temporaryPaddle.setTag(TEMPORARY_PADDLE_TAG);
         this.gameObjects().addGameObject(temporaryPaddle);
     }
@@ -290,13 +295,6 @@ public class BrickerGameManager extends GameManager {
         if (this.ball.getCollisionCounter() - cameraSetBricksLeft >= BRICKS_FOR_CAMERA_CHANGE_BACK) {
             this.setCamera(null);
         }
-    }
-
-    /**
-     * @return the main ball of the game
-     */
-    public Ball getBall(){
-        return this.ball;
     }
 
     /*
@@ -349,7 +347,8 @@ public class BrickerGameManager extends GameManager {
      * @param windowDimensions the dimensions of the game window
      */
     private void createPaddle(Vector2 windowDimensions) {
-        Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2, (int) windowDimensions.y() - PADDLE_Y_OFFSET);
+        Vector2 paddleLocation = new Vector2(windowDimensions.x() / 2,
+                (int) windowDimensions.y() - PADDLE_Y_OFFSET);
         GameObject paddle = objectFactory.createPaddle(paddleLocation, windowDimensions.x());
         paddle.setTag(ORIGINAL_PADDLE_TAG);
         this.gameObjects().addGameObject(paddle);
@@ -379,9 +378,12 @@ public class BrickerGameManager extends GameManager {
      * @param windowDimensions the dimensions of the wall
      */
     private void buildWalls(Vector2 windowDimensions) {
-        GameObject leftWall = objectFactory.createWall(Vector2.ZERO, new Vector2(WALL_WIDTH, windowDimensions.y()));
-        GameObject rightWall = objectFactory.createWall(new Vector2(windowDimensions.x() - WALL_WIDTH, 0), new Vector2(WALL_WIDTH, windowDimensions.y()));
-        GameObject upperWall = objectFactory.createWall(Vector2.ZERO, new Vector2(windowDimensions.x(), WALL_WIDTH));
+        GameObject leftWall = objectFactory.createWall(Vector2.ZERO, new Vector2(WALL_WIDTH,
+                windowDimensions.y()));
+        GameObject rightWall = objectFactory.createWall(new Vector2(windowDimensions.x() - WALL_WIDTH,
+                0), new Vector2(WALL_WIDTH, windowDimensions.y()));
+        GameObject upperWall = objectFactory.createWall(Vector2.ZERO,
+                new Vector2(windowDimensions.x(), WALL_WIDTH));
         this.gameObjects().addGameObject(leftWall);
         this.gameObjects().addGameObject(rightWall);
         this.gameObjects().addGameObject(upperWall);
@@ -433,7 +435,8 @@ public class BrickerGameManager extends GameManager {
      * @param windowDimensions
      */
     private void createStrikeNumberDisplay(Vector2 windowDimensions) {
-        this.strikeNumberDisplay = objectFactory.createStrikeNumberDisplay(new Vector2(NUMBER_COUNTER_X_OFFSET,
+        this.strikeNumberDisplay = objectFactory.createStrikeNumberDisplay(
+                new Vector2(NUMBER_COUNTER_X_OFFSET,
                 windowDimensions.y() - NUMBER_COUNTER_Y_OFFSET));
         this.gameObjects().addGameObject(strikeNumberDisplay, Layer.UI);
     }

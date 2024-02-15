@@ -27,7 +27,7 @@ public class TemporaryPaddle extends Paddle{
      * @param dimensions    Width and height in window coordinates.
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
-     * @param inputListener The input listener instance that is in charge of processing the keyboard arguments.
+     * @param inputListener An input listener instance that is in charge of processing the keyboard arguments
      * @param BrickerGameManager The bricker game manager.
      * @param windowWidth The width of the game window.
      */

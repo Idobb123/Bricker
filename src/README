@@ -1,0 +1,159 @@
+adamflei123, idobb123
+211603469, 206785297
+
+1.
+    In section 1.7 we were instructed to use the strategy design pattern. more specifically, each brick will
+    hold and instance of a strategy implementing the interface CollisionStrategy. upon collision the brick
+    will call onCollision() of it's strategy. We chose to have BasicCollisionStrategy to delete the object
+    within it's onCollision method. The implementation is as follows:
+    BasicCollisionStrategy holds a reference to an instance of BrickerGameManager and calls upon
+    deleteObject() inside of onCollision to delete the brick
+
+    Pros:
+        Encapsulation - the brick is not involved with its deletion
+        Information Hiding - the brick doesn't need to hold an instance of BrickerGameManager or for that
+        matter be aware of its existence. Furthermore, with accordance to the strategy design pattern the
+        brick is unaware of the implementation of how its deleted
+    Cons:
+        BasicCollisionStrategy (and all other strategies) hold an instance of BrickerGameManager.
+        this isn't ideal as we would have liked to keep them separate for encapsulation purposes, but we
+        thought that its better than the alternatives.
+
+2.
+    Implementation of the hearts counter:
+    Graphic: first, we implemented a new class - Heart. said class has two main functions, one that deletes
+    itself and another, and override of onCollision that adds another heart in case of collision.
+    In addition to the class we created a private field for BrickerGameManager, hearts, that holds an array of
+    size MAX_HEARTS(4 in our case) of hearts. each time the GameManager calls the update function, it checks
+    whether the ball dropped, if it did, we deduct one heart from the user and tell the last heart in the
+    array to delete itself. If a heart that dropped from a brick collides with the paddle (and only the
+    original paddle) then the heart calls it's onCollision method which calls BrickerGameManagers addHeart()
+    which adds another heart to the UI and increments the strike counter if it is below MAX_HEARTS.
+
+    Numeric: We chose not to implement another class for the strike number display and instead simply to
+    hold it as a field in BrickerGameManager. This choice was made because we didnt want to complicate the
+    API with yet another class with very minimal functionality. In addition the gameObject already
+    implements the needed behavior in a clear way. Back to how we did implement it:
+    At the start of the game we call createStrikeNumberDisplay() in the manager to create the initial
+    number display. We implement it using the TextRenderable mentioned in section 1.8. Much like the heart
+    in each update when we check whether the ball has dropped, if it did, we delete the current number display
+    object and create another one with the updated strikes counter as its number and the matching color.
+
+3.
+    Our implementations of all of the strategies involves them holding an instance of BrickerGameManager.
+    An explanation about objectFactory will be at the end of the question.
+
+    AdditionalHeartStrategy - the onCollision functions calls the BrickerGameManager's function
+    createFallingHeart(). This function creates another instance of Heart, sets its location to the middle
+    of the brick (which is provided as an arg from onCollision), sets its velocity downwards (this is all
+    done using out objectFactory class which we will touch on in Q5) and adds it to the game objects.
+
+    AdditionalPaddleStrategy - the onCollision function calls BrickersGameManager's createTemporaryPaddle().
+    TemporaryPaddle is a new class that extends Paddle (is-a relation). More specifically it overrides the
+    onCollision of Paddle such that after four collisions with the ball it will delete itself,
+    using BrickerGameManager's deleteObject().
+    createTemporaryPaddle() creates an instance of TemporaryPaddle in the middle of the screen and set's
+    the TemporaryPaddle's tag to TEMPORARY_PADDLE_TAG. the behaviour of going left and right according to the
+    user's input is inherited from Paddle.
+
+    PuckStrategy - the onCollision functions calls the BrickerGameManager's function createPuck() twice.
+    This function - using the objectFactory - creates a new puck at the location of the broken brick with
+    the direction as instructed in 2.2.1.4
+
+    CameraChangeStrategy - the onCollision function checks that the ball that collided with the brick is the
+    regular ball, an also checks that the camera isn't already set to follow the ball. If both of the
+    conditions are met, calls BrickerGameManager's setCameraToBall()
+    set camera operates as instructed in 2.2.3 plus it records the number of collisions that the ball
+    had up to that point. To change the camera back to default we use the  setCameraToDefault() function
+    (inside of the manager) that checks if the ball has collided 4 more times. If so, changes the camera back
+    to default. This function is called inside the overriden update()
+
+    ObjectFactory - this is a classic factory containing all of the logic for creating the gameObjects needed
+    for the game. handles all of the little details such as which asset to render and so on.
+
+4.
+    We used a decorator to implement the double strategy. First we created a class, StrategyDecorator, which
+    implements the CollisionStrategy interface. This class holds an instance of CollisionStrategy given to it
+    in the constructor. the onCollision calls the onCollision function of the strategy it holds.
+    To implement the decorator we made all of the special strategies inherit from StrategyDecorator. And in
+    addition to call super.onCollision(brick, other) inside of their onCollision method.
+    In this we have achieved two things:
+    1) since the "base case" of the decorator is BasicCollisionStrategy every special strategy wraps it
+    and therefore deletes the brick onCollision by calling super.onCollision (which is quite elegant)
+    2) we can easily decorate each strategy with another, thus creating a double strategy (or triple, or any
+    other number if needed). For example we could do:
+        CollisionStrategy basic = new BasicCollisionStrategy(brickerGameManager)
+        CollisionStrategy heart = new AdditionalHeartStrategy(basic, brickerGameManager)
+        CollisionStrategy puck = new PuckStrategy(heart, brickerGameManager)
+    which creates a brick that upon breaking will drop a heart, generate two pucks and of course break.
+    A brick with the strategy above upon collision will call the puck strategies' onCollision which will call
+    it's super, the heart strategies' onCollision which will in turn call it's super, the basic strategy.
+    Afterwards the calls start to return and preform first the heart strategy and following that the puck.
+
+    Choosing which strategies are chosen in double is a task handled by ObjectFactory. ObjectFactory uses the
+    method chooseDoubleStrategies() which chooses two strategies at random, and if one of them (or both) is
+    also a double, then it chooses three special strategies that are not double at random thus limiting the
+    number of strategies to a maximum of three.
+
+5.
+    Classes we have already spoken about and Justified: Heart, TemporaryPaddle, StrategyDecorator
+
+    New Classes:
+
+    BallType - an enum for readabilities sake for differentiating between creating the regular ball and the
+    puck inside createBall() of ObjectFactory. Not necessary but good design, as it allows us to have a single
+    method to create both the puck and the ball instead of two
+
+    SpecialBrickStrategyEnum - an enum for readability. used inside of ObjectFactory's functions that concern
+    the choosing of strategies when creating bricks. Not necessary, just elegant
+
+    ObjectFactory - as mentioned above this class handles the creation of all of the game objects. For more
+    detail about the creation of each object please read the documentation. Once again, this class in not
+    necessary but it does allow our code to follow more closely some of the OOP design principals such as
+    encapsulation (outsources the creation of objects from BrickerGameManager into the factory)
+    information hiding (hides the implementation of creating objects from BrickerGameManager)
+    Open for Extension (this allows us to easily add the creation of more objects to the class).
+    The last principle, we felt very strongly in our work while adding more and more GameObjects to the game.
+
+    New public methods in BrickerGameManager:
+
+    deleteObject() - this method is necessary because it lets us implement our design for
+    BasicCollisionStrategies onCollision brick deletion. And by extension the deletion of bricks from all
+    of the special strategies
+
+    addHeart() - this method is necessary because we thought its best that the heart objects signal the game
+    manager to create a new heart when it collides with the regular paddle. In our eyes the best way to
+    implement this behaviour is through using composition with an instance of BrickerGameManager and thus
+    this function needs to be public. This design follows encapsulation in that the heart object is
+    responsible for handling it's own collision. Furthermore, the GameManager handles all the
+    objects in the game, therefore it is the one actually adding the object
+
+    createFallingHeart() - This function is called from AdditionalHeartStrategy's onCollision().
+    This is necessary for similar reasons to addHeart(). GameManager is the one that handles the game objects
+    (and their creation through the factory) and therefore it needs to handle the creation of a falling heart
+    as well. This design choice also benefits encapsulation in that the strategy signals when to create the
+    heart that it is responsible for.
+
+    createPuck() - called from within onCollision of the PuckStrategy. Once again, this is necessary since
+    we want the Strategy to signal through the bricks what should happen and following that to have the
+    BrickerGameManager act as needed. In this case the strategy demands two pucks to be created and this the
+    game manager needs to create two pucks. The game manager is the class that handles the game object and
+    therefore he should be responsible for their creation
+
+    void createTemporaryPaddle() - The explanation here is the same as the two above it. The strategy signals
+    that a new temporary paddle should be created and the class that should handle that is BrickerGameManager.
+    The benefits of this design are also the same as the two above
+
+    void setCameraToBall() - yet another case of a signal from a strategy, see the above cases.
+    here, in addition, the camera change back is dependent on the ball and since letting the strategy manage
+    the ball will break encapsulation its good design (in our opinion) to let the GameManager handle the
+    camera after the signal to change it to the ball has been received.
+
+
+
+
+
+
+
+
+

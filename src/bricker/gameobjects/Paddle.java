@@ -25,7 +25,7 @@ public class Paddle extends GameObject {
      * @param dimensions    Width and height in window coordinates.
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
-     * @param inputListener The input listener instance that is in charge of processing the keyboard arguments.
+     * @param inputListener AN input listener instance that is in charge of processing the keyboard arguments
      * @param windowWidth   The width of the game window.
      */
     public Paddle(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable,
@@ -37,7 +37,8 @@ public class Paddle extends GameObject {
 
     /**
      * An overwrite of the update function from DanoGameLabs.
-     * This version also receives as input the keypad from the users and changes the paddle velocity accordingly.
+     * This version also receives as input the keypad from the users
+     * and changes the paddle velocity accordingly.
      * The function also makes sure the paddle does not go outside the window bounds.
      * @param deltaTime The time elapsed, in seconds, since the last frame. Can
      *                  be used to determine a new position/velocity by multiplying

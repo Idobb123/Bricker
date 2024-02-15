@@ -54,7 +54,7 @@ public class ObjectFactory {
      * A constructor that creates a factory that wraps the creation of game objects.
      * @param imageReader An object that reads the images.
      * @param soundReader An object that reads the sound.
-     * @param inputListener The input listener instance that is in charge of processing the keyboard arguments.
+     * @param inputListener An input listener instance that is in charge of processing the keyboard arguments
      * @param BrickerGameManager The bricker game manager.
      * @param bricksLeftCounter A counter containing how many bricks are still "in the game".
      * @param strikeCounter A counter containing how many strikes left.
@@ -96,7 +96,8 @@ public class ObjectFactory {
     public GameObject createStrikeNumberDisplay(Vector2 textLocation){
         TextRenderable strikeText = new TextRenderable(String.valueOf(strikeCounter.value()));
         strikeText.setColor(getStrikeNumberDisplayColor());
-        GameObject strikeNumberDisplay = new GameObject(Vector2.ZERO, new Vector2(STRIKE_NUMBER_WIDTH_AND_HEIGHT, STRIKE_NUMBER_WIDTH_AND_HEIGHT), strikeText);
+        GameObject strikeNumberDisplay = new GameObject(Vector2.ZERO,
+                new Vector2(STRIKE_NUMBER_WIDTH_AND_HEIGHT, STRIKE_NUMBER_WIDTH_AND_HEIGHT), strikeText);
         strikeNumberDisplay.setCenter(textLocation);
         return strikeNumberDisplay;
     }
@@ -109,7 +110,10 @@ public class ObjectFactory {
      */
     public Paddle createPaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
-        Paddle paddle = new Paddle(Vector2.ZERO, new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT), paddleImage, inputListener, windowWidth);
+        Paddle paddle = new Paddle(Vector2.ZERO,
+                new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
+                paddleImage, inputListener,
+                windowWidth);
         paddle.setCenter(paddleLocation);
         return paddle;
     }
@@ -261,10 +265,14 @@ public class ObjectFactory {
      */
     private SpecialBrickStrategyEnum[] chooseDoubleStrategies(){
         SpecialBrickStrategyEnum[] strategyTypes = SpecialBrickStrategyEnum.values();
-        SpecialBrickStrategyEnum randomStrategyType1 = strategyTypes[rand.nextInt(AMOUNT_OF_SPECIAL_STRATEGIES)];
-        SpecialBrickStrategyEnum randomStrategyType2 = strategyTypes[rand.nextInt(AMOUNT_OF_SPECIAL_STRATEGIES)];
-        if (randomStrategyType1 == SpecialBrickStrategyEnum.DOUBLE_STRATEGY || randomStrategyType2 == SpecialBrickStrategyEnum.DOUBLE_STRATEGY){
-            SpecialBrickStrategyEnum[] behaviours =  {strategyTypes[rand.nextInt(AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES)],
+        SpecialBrickStrategyEnum randomStrategyType1 =
+                strategyTypes[rand.nextInt(AMOUNT_OF_SPECIAL_STRATEGIES)];
+        SpecialBrickStrategyEnum randomStrategyType2 =
+                strategyTypes[rand.nextInt(AMOUNT_OF_SPECIAL_STRATEGIES)];
+        if (randomStrategyType1 == SpecialBrickStrategyEnum.DOUBLE_STRATEGY
+                || randomStrategyType2 == SpecialBrickStrategyEnum.DOUBLE_STRATEGY){
+            SpecialBrickStrategyEnum[] behaviours = {
+                    strategyTypes[rand.nextInt(AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES)],
                     strategyTypes[rand.nextInt(AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES)],
                     strategyTypes[rand.nextInt(AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES)]};
             return behaviours;
