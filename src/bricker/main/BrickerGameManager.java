@@ -13,7 +13,6 @@ import danogl.util.Vector2;
 
 import java.awt.event.KeyEvent;
 import java.util.Random;
-//TODO: Create a main method that follows the rules in the ex description.
 /**
  * A class that manages the run of a Bricker game. relies upon the GameManager of the DanoGameLabs library.
  * Manages all the objects of the game, including the background and the UI
@@ -27,7 +26,7 @@ public class BrickerGameManager extends GameManager {
     /** the frame-rate for the game*/
     private static final int TARGET_FRAME_RATE = 100;
     /** the speed that a heart will fall from a brick*/
-    private static final float HEART_FALLING_SPEED = 100; //TODO: put the constants in a separate class.
+    private static final float HEART_FALLING_SPEED = 100;
     /** the object tag for the player's paddle*/
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
     /** the object tag for the paddle generated from the strategy */

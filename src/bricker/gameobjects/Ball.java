@@ -4,7 +4,6 @@ import danogl.collisions.Collision;
 import danogl.gui.Sound;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-//TODO: We should not reset the camera if the ball is gone mid camera special event.
 /**
  * A class representing a ball in the game.
  * The class represents both the "main" ball and the "puck" balls.
