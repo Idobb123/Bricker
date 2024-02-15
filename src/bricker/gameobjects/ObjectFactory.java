@@ -4,7 +4,10 @@ import bricker.BrickerGameManager;
 import bricker.brick_strategies.*;
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
-import danogl.gui.*;
+import danogl.gui.ImageReader;
+import danogl.gui.Sound;
+import danogl.gui.SoundReader;
+import danogl.gui.UserInputListener;
 import danogl.gui.rendering.Renderable;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Counter;
@@ -20,7 +23,7 @@ import java.util.Random;
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class ObjectFactory {
-    /** the height of the bricks */
+    /** The height of the bricks */
     private static float BRICK_HEIGHT = 15;
     private ImageReader imageReader;
     private SoundReader soundReader;

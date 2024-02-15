@@ -15,7 +15,7 @@ import danogl.util.Vector2;
 public class TemporaryPaddle extends Paddle{
     private final Counter hitCounter;
     private final BrickerGameManager brickerGameManager;
-
+    /** the object tag for the main ball */
     private static final String ORIGINAL_BALL_TAG = "originalBall";
     /**
      * Constructs a new TemporaryPaddle instance.

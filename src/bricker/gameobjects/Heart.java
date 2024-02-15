@@ -13,6 +13,7 @@ import danogl.util.Vector2;
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class Heart extends GameObject {
+    /** the object tag for the player's paddle*/
     private static final String ORIGINAL_PADDLE_TAG = "originalPaddle";
     private Counter strikeCounter;
     private BrickerGameManager brickerGameManager;

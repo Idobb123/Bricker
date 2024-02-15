@@ -19,6 +19,7 @@ import java.util.Random;
 /**
  * A class that manages the run of a Bricker game. relies upon the GameManager of the DanoGameLabs library.
  * Manages all of the objects of the game, including the background and the UI
+ * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class BrickerGameManager extends GameManager {
     /** the prompt displayed to the user upon losing*/
