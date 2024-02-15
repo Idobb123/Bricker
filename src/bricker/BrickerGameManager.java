@@ -1,5 +1,4 @@
 package bricker;
-//TODO: give credit for using the images and sounds.
 import bricker.gameobjects.*;
 import danogl.GameManager;
 import danogl.GameObject;
@@ -14,7 +13,6 @@ import danogl.util.Vector2;
 
 import java.awt.event.KeyEvent;
 import java.util.Random;
-//TODO: give credit for using the images and sounds.
 
 /**
  * A class that manages the run of a Bricker game. relies upon the GameManager of the DanoGameLabs library.
@@ -27,7 +25,7 @@ public class BrickerGameManager extends GameManager {
     /** the prompt displayed to the user upon winning*/
     private static final String WINNING_PROMPT = "You win! Play again?";
     /** the frame-rate for the game*/
-    private static final int TARGET_FRAME_RATE = 100; // TODO: check if upping the frame betters the game
+    private static final int TARGET_FRAME_RATE = 100;
     /** the speed that a heart will fall from a brick*/
     private static final float HEART_FALLING_SPEED = 100; //TODO: put the constants in a separate class.
     /** the object tag for the player's paddle*/
@@ -35,7 +33,7 @@ public class BrickerGameManager extends GameManager {
     /** the object tag for the paddle generated from the strategy */
     private static final String TEMPORARY_PADDLE_TAG = "temporaryPaddle";
     /** the object tag for the main ball */
-    private static final String ORIGINAL_BALL_TAG = "originalBall";
+    private static final String ORIGINAL_BALL_TAG = "regularBall";
     /** the default number of pricks per row */
     private static final int DEFAULT_BRICKS_PER_ROW = 8;
     /** the default number of rows */
@@ -66,17 +64,17 @@ public class BrickerGameManager extends GameManager {
     /** the amount of bricks that need to be destroyed for the camera to change back*/
     private static final int BRICKS_FOR_CAMERA_CHANGE_BACK = 4;
     /** the default number strikes (hearts) the player starts with */
-    private static int DEFAULT_STRIKES_LEFT = 3;
+    private static final int DEFAULT_STRIKES_LEFT = 3;
     /** the width of the games' walls*/
-    private static float WALL_WIDTH = 15;
+    private static final float WALL_WIDTH = 15;
     /** the space between each of the bricks*/
-    private static float BRICK_SPACE = 2;
+    private static final float BRICK_SPACE = 2;
     /** the height of the bricks */
-    private static float BRICK_HEIGHT = 15;
+    private static final float BRICK_HEIGHT = 15;
     /** the maximum number of hearts a player can have */
-    private static int MAX_HEARTS = 4;
+    private static final int MAX_HEARTS = 4;
     /** the speed of the ball */
-    private static float BALL_SPEED = 200;
+    private static final float BALL_SPEED = 200;
     private Random rand = new Random();
     private int bricksPerRow;
     private int numberOfRows;

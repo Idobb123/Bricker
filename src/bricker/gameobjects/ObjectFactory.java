@@ -15,16 +15,33 @@ import danogl.util.Vector2;
 
 import java.awt.*;
 import java.util.Random;
-//TODO: To document this class
-//TODO: Removes constants from all classes
-//TODO: note that private functions are documented in the correct format.
 /**
  * A factory class that handles the creation of all the game objects.
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class ObjectFactory {
     /** The height of the bricks */
-    private static float BRICK_HEIGHT = 15;
+    private static final float BRICK_HEIGHT = 15;
+    /** The width and the height of the heart object image */
+    private static final float HEART_WIDTH_AND_HEIGHT = 15;
+    /** The width and the height of the strikes left text */
+    private static final float STRIKE_NUMBER_WIDTH_AND_HEIGHT = 30;
+    /** The width and the height of the ball object image */
+    private static final float BALL_WIDTH_AND_HEIGHT = 20;
+    /** The width and the height multiplying factor compared the "regular" ball size */
+    private static final float PUCK_BALL_SIZE_FACTOR = 0.75f;
+    /** The paddle width */
+    private static final float PADDLE_WIDTH = 200;
+    /** The height of the paddle */
+    private static final float PADDLE_HEIGHT = 20;
+    /** The amount of hearts in which the strike counter text is written in yellow */
+    private static final float YELLOW_COLOR_STRIKES_LEFT_NUMBER = 2;
+    /** The amount of hearts in which the strike counter text is written in red */
+    private static final float RED_COLOR_STRIKES_LEFT_NUMBER = 1;
+    /** The amount of "special" strategies */
+    private static final int AMOUNT_OF_SPECIAL_STRATEGIES = 5;
+    /** The amount of "special" strategies not count the double strategy */
+    private static final int AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES = 4;
     private ImageReader imageReader;
     private SoundReader soundReader;
     private UserInputListener inputListener;
@@ -65,7 +82,7 @@ public class ObjectFactory {
      */
     public Heart createHeart(Vector2 heartLocation){
         Renderable heartImage = this.imageReader.readImage("assets/heart.png", true);
-        Heart heart = new Heart(Vector2.ZERO, new Vector2(15, 15),
+        Heart heart = new Heart(Vector2.ZERO, new Vector2(HEART_WIDTH_AND_HEIGHT, HEART_WIDTH_AND_HEIGHT),
                 heartImage, strikeCounter, brickerGameManager);
         heart.setCenter(heartLocation);
         return heart;
@@ -79,7 +96,7 @@ public class ObjectFactory {
     public GameObject createStrikeNumberDisplay(Vector2 textLocation){
         TextRenderable strikeText = new TextRenderable(String.valueOf(strikeCounter.value()));
         strikeText.setColor(getStrikeNumberDisplayColor());
-        GameObject strikeNumberDisplay = new GameObject(Vector2.ZERO, new Vector2(30, 30), strikeText);
+        GameObject strikeNumberDisplay = new GameObject(Vector2.ZERO, new Vector2(STRIKE_NUMBER_WIDTH_AND_HEIGHT, STRIKE_NUMBER_WIDTH_AND_HEIGHT), strikeText);
         strikeNumberDisplay.setCenter(textLocation);
         return strikeNumberDisplay;
     }
@@ -92,7 +109,7 @@ public class ObjectFactory {
      */
     public Paddle createPaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
-        Paddle paddle = new Paddle(Vector2.ZERO, new Vector2(200, 20), paddleImage, inputListener, windowWidth);
+        Paddle paddle = new Paddle(Vector2.ZERO, new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT), paddleImage, inputListener, windowWidth);
         paddle.setCenter(paddleLocation);
         return paddle;
     }
@@ -105,7 +122,7 @@ public class ObjectFactory {
      */
     public TemporaryPaddle createTemporaryPaddle(Vector2 paddleLocation, float windowWidth){
         Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
-        TemporaryPaddle temporaryPaddle = new TemporaryPaddle(Vector2.ZERO, new Vector2(200, 20),
+        TemporaryPaddle temporaryPaddle = new TemporaryPaddle(Vector2.ZERO, new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
                 paddleImage, inputListener, brickerGameManager, windowWidth );
         temporaryPaddle.setCenter(paddleLocation);
         return temporaryPaddle;
@@ -113,6 +130,7 @@ public class ObjectFactory {
 
     /**
      * Creates a ball instance.
+     * credit goes to soundbible website for the collision sound.
      * @param ballLocation The location of the created ball (center).
      * @param velocity The velocity of the ball.
      * @param ballType The type of the ball (whether it is a puck or a regular ball).
@@ -120,14 +138,14 @@ public class ObjectFactory {
      */
     public Ball createBall(Vector2 ballLocation, Vector2 velocity, BallType ballType){
         Renderable ballImage = null;
-        Vector2 ballSize = new Vector2(20, 20);
+        Vector2 ballSize = new Vector2(BALL_WIDTH_AND_HEIGHT, BALL_WIDTH_AND_HEIGHT);
         switch (ballType) {
             case REGULAR:
                 ballImage = imageReader.readImage("assets/ball.png", true);
                 break;
             case PUCK:
                 ballImage = imageReader.readImage("assets/mockBall.png", true);
-                ballSize = ballSize.mult(0.75f);
+                ballSize = ballSize.mult(PUCK_BALL_SIZE_FACTOR);
                 break;
         }
         Sound collisionSound = soundReader.readSound("assets/blop_cut_silenced.wav");
@@ -164,10 +182,10 @@ public class ObjectFactory {
      * @return A Color to write the amount of strikes in.
      */
     private Color getStrikeNumberDisplayColor() {
-        if (strikeCounter.value() == 2) {
+        if (strikeCounter.value() == YELLOW_COLOR_STRIKES_LEFT_NUMBER) {
             return Color.yellow;
         }
-        else if (strikeCounter.value() == 1) {
+        else if (strikeCounter.value() == RED_COLOR_STRIKES_LEFT_NUMBER) {
             return Color.red;
         }
         else {
@@ -200,7 +218,7 @@ public class ObjectFactory {
         }
 
         SpecialBrickStrategyEnum[] strategyTypes = SpecialBrickStrategyEnum.values();
-        int nextStrategyNumber = rand.nextInt(5);
+        int nextStrategyNumber = rand.nextInt(AMOUNT_OF_SPECIAL_STRATEGIES);
         SpecialBrickStrategyEnum randomStrategyType = strategyTypes[nextStrategyNumber];
         return chooseStrategyBasedOnEnum(randomStrategyType, strategy);
     }
@@ -239,12 +257,12 @@ public class ObjectFactory {
      */
     private SpecialBrickStrategyEnum[] chooseDoubleStrategies(){
         SpecialBrickStrategyEnum[] strategyTypes = SpecialBrickStrategyEnum.values();
-        SpecialBrickStrategyEnum randomStrategyType1 = strategyTypes[rand.nextInt(5)];
-        SpecialBrickStrategyEnum randomStrategyType2 = strategyTypes[rand.nextInt(5)];
+        SpecialBrickStrategyEnum randomStrategyType1 = strategyTypes[rand.nextInt(AMOUNT_OF_SPECIAL_STRATEGIES)];
+        SpecialBrickStrategyEnum randomStrategyType2 = strategyTypes[rand.nextInt(AMOUNT_OF_SPECIAL_STRATEGIES)];
         if (randomStrategyType1 == SpecialBrickStrategyEnum.DOUBLE_STRATEGY || randomStrategyType2 == SpecialBrickStrategyEnum.DOUBLE_STRATEGY){
-            SpecialBrickStrategyEnum[] behaviours =  {strategyTypes[rand.nextInt(4)],
-                    strategyTypes[rand.nextInt(4)],
-                    strategyTypes[rand.nextInt(4)]};
+            SpecialBrickStrategyEnum[] behaviours =  {strategyTypes[rand.nextInt(AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES)],
+                    strategyTypes[rand.nextInt(AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES)],
+                    strategyTypes[rand.nextInt(AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES)]};
             return behaviours;
         }
 

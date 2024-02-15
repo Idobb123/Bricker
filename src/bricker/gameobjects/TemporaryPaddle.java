@@ -12,11 +12,13 @@ import danogl.util.Vector2;
  * A class representing a temporary paddle.
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
-public class TemporaryPaddle extends Paddle{
+public class TemporaryPaddle extends Paddle{  //TODO: Reconsider if want to use this class.
+    /** the object tag for the main ball */
+    private static final int MAXIMAL_HITS_ALLOWED = 4;
+    /** The tag of the "regular" ball */
+    private static final String ORIGINAL_BALL_TAG = "regularBall";
     private final Counter hitCounter;
     private final BrickerGameManager brickerGameManager;
-    /** the object tag for the main ball */
-    private static final String ORIGINAL_BALL_TAG = "originalBall";
     /**
      * Constructs a new TemporaryPaddle instance.
      *
@@ -55,7 +57,7 @@ public class TemporaryPaddle extends Paddle{
         super.onCollisionEnter(other, collision);
         if (other.getTag().equals(ORIGINAL_BALL_TAG))
             hitCounter.increment();
-        if (hitCounter.value() >= 4) {
+        if (hitCounter.value() >= MAXIMAL_HITS_ALLOWED) {
             brickerGameManager.deleteObject(this);
         }
     }

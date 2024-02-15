@@ -18,7 +18,6 @@ public class Heart extends GameObject {
     private Counter strikeCounter;
     private BrickerGameManager brickerGameManager;
 
-
     /**
      * Construct a new Heart instance.
      *

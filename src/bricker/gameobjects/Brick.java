@@ -12,7 +12,6 @@ import danogl.util.Vector2;
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class Brick extends GameObject {
-
     private CollisionStrategy collisionStrategy;
     private final Counter bricksLeftCounter;
 

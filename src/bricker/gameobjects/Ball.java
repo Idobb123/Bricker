@@ -5,14 +5,12 @@ import danogl.gui.Sound;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 //TODO: We should not reset the camera if the ball is gone mid camera special event.
-//TODO: Document all the constants.
 /**
  * A class representing a ball in the game.
  * The class represents both the "main" ball and the "puck" balls.
  * @author Ido Ben Zvi Brenner & Adam Leon Fleisher
  */
 public class Ball  extends GameObject {
-
     private final Sound collisionSound;
     private int collisionCounter;
 
