@@ -42,6 +42,20 @@ public class ObjectFactory {
     private static final int AMOUNT_OF_SPECIAL_STRATEGIES = 5;
     /** The amount of "special" strategies not count the double strategy */
     private static final int AMOUNT_OF_NON_DOUBLE_SPECIAL_STRATEGIES = 4;
+    /** The image path for the heart */
+    private static final String HEART_IMAGE_PATH = "assets/heart.png";
+    /** The image path for the paddle */
+    private static final String PADDLE_IMAGE_PATH = "assets/paddle.png";
+    /** The image path for the ball */
+    private static final String BALL_IMAGE_PATH = "assets/ball.png";
+    /** The image path for the puck */
+    private static final String PUCK_IMAGE_PATH = "assets/mockBall.png";
+    /** The sound path for the collision the balls and pucks */
+    private static final String BALL_COLLISION_SOUND_PATH = "assets/blop_cut_silenced.wav";
+    /** The image path for the background image */
+    private static final String BACKGROUND_IMAGE_PATH = "assets/DARK_BG2_small.jpeg";
+    /** The image path for the brick */
+    private static final String BRICK_IMAGE_PATH = "assets/brick.png";
     private ImageReader imageReader;
     private SoundReader soundReader;
     private UserInputListener inputListener;
@@ -81,7 +95,7 @@ public class ObjectFactory {
      * @return The created heart object instance.
      */
     public Heart createHeart(Vector2 heartLocation){
-        Renderable heartImage = this.imageReader.readImage("assets/heart.png", true);
+        Renderable heartImage = this.imageReader.readImage(HEART_IMAGE_PATH, true);
         Heart heart = new Heart(Vector2.ZERO, new Vector2(HEART_WIDTH_AND_HEIGHT, HEART_WIDTH_AND_HEIGHT),
                 heartImage, strikeCounter, BrickerGameManager);
         heart.setCenter(heartLocation);
@@ -109,7 +123,7 @@ public class ObjectFactory {
      * @return The created paddle object instance.
      */
     public Paddle createPaddle(Vector2 paddleLocation, float windowWidth){
-        Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
+        Renderable paddleImage = imageReader.readImage(PADDLE_IMAGE_PATH, true);
         Paddle paddle = new Paddle(Vector2.ZERO,
                 new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
                 paddleImage, inputListener,
@@ -125,7 +139,7 @@ public class ObjectFactory {
      * @return Returns the created TemporaryPaddle object instance.
      */
     public TemporaryPaddle createTemporaryPaddle(Vector2 paddleLocation, float windowWidth){
-        Renderable paddleImage = imageReader.readImage("assets/paddle.png", true);
+        Renderable paddleImage = imageReader.readImage(PADDLE_IMAGE_PATH, true);
         TemporaryPaddle temporaryPaddle = new TemporaryPaddle(Vector2.ZERO,
                 new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
                 paddleImage, inputListener, BrickerGameManager, windowWidth );
@@ -146,14 +160,14 @@ public class ObjectFactory {
         Vector2 ballSize = new Vector2(BALL_WIDTH_AND_HEIGHT, BALL_WIDTH_AND_HEIGHT);
         switch (ballType) {
             case REGULAR:
-                ballImage = imageReader.readImage("assets/ball.png", true);
+                ballImage = imageReader.readImage(BALL_IMAGE_PATH, true);
                 break;
             case PUCK:
-                ballImage = imageReader.readImage("assets/mockBall.png", true);
+                ballImage = imageReader.readImage(PUCK_IMAGE_PATH, true);
                 ballSize = ballSize.mult(PUCK_BALL_SIZE_FACTOR);
                 break;
         }
-        Sound collisionSound = soundReader.readSound("assets/blop_cut_silenced.wav");
+        Sound collisionSound = soundReader.readSound(BALL_COLLISION_SOUND_PATH);
         Ball ball = new Ball(Vector2.ZERO, ballSize, ballImage, collisionSound);
         ball.setVelocity(velocity);
         ball.setCenter(ballLocation);
@@ -166,7 +180,8 @@ public class ObjectFactory {
      * @return The created background object instance.
      */
     public GameObject createBackGround(Vector2 windowDimensions){
-        Renderable backgroundImage = imageReader.readImage("assets/DARK_BG2_small.jpeg", false);
+        Renderable backgroundImage = imageReader.readImage(BACKGROUND_IMAGE_PATH,
+                false);
         GameObject background = new GameObject(Vector2.ZERO, windowDimensions,backgroundImage);
         background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         return background;
@@ -206,7 +221,7 @@ public class ObjectFactory {
      */
     public Brick createBrick(Vector2 brickLocation, float brickWidth) {
         CollisionStrategy strategy = generateStrategy();
-        Renderable brickImage = imageReader.readImage("assets/brick.png", false);
+        Renderable brickImage = imageReader.readImage(BRICK_IMAGE_PATH, false);
         Brick brick = new Brick(brickLocation,
                 new Vector2(brickWidth, BRICK_HEIGHT),
                 brickImage,strategy, bricksLeftCounter);
