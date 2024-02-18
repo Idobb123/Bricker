@@ -85,7 +85,9 @@ public class BrickerGameManager extends GameManager {
     private Heart[] hearts;
     private GameObject strikeNumberDisplay;
     private ObjectFactory objectFactory;
-    private int cameraSetBricksLeft;
+    private int numberOfCameraHits;
+    private int cameraBallHits;
+    private boolean cameraActivated;
 
     /**
      *  Constructs a new BrickerGameManager instance with the default number of bricks per row (8) and the
@@ -280,7 +282,11 @@ public class BrickerGameManager extends GameManager {
      * sets the camera to focus on the ball and increase the zoom by a bit
      */
     public void setCameraToBall() {
-        this.cameraSetBricksLeft  = this.ball.getCollisionCounter();
+        if(!cameraActivated){
+            this.numberOfCameraHits = 0;
+            this.cameraBallHits = this.ball.getCollisionCounter();
+            this.cameraActivated = true;
+        }
         this.setCamera(new Camera(ball,
                 Vector2.ZERO,
                 windowController.getWindowDimensions().mult(CAMERA_ZOOM_FARCTOR),
@@ -291,8 +297,23 @@ public class BrickerGameManager extends GameManager {
      * sets the camera back to default
      */
     private void setCameraToDefault() {
-        if (this.ball.getCollisionCounter() - cameraSetBricksLeft >= BRICKS_FOR_CAMERA_CHANGE_BACK) {
+        if (this.cameraActivated){
+            if(this.cameraBallHits > this.ball.getCollisionCounter()){
+                this.cameraBallHits = this.ball.getCollisionCounter();
+                this.numberOfCameraHits = this.numberOfCameraHits + cameraBallHits;
+
+            }else{
+                int diff = this.ball.getCollisionCounter() - this.cameraBallHits;
+                this.cameraBallHits = this.ball.getCollisionCounter();
+                this.numberOfCameraHits = this.numberOfCameraHits + diff;
+            }
+        }
+        if (this.numberOfCameraHits > BRICKS_FOR_CAMERA_CHANGE_BACK) {
             this.setCamera(null);
+            this.cameraActivated = false;
+            this.numberOfCameraHits = 0;
+            this.cameraBallHits = 0;
+
         }
     }
 
@@ -321,8 +342,10 @@ public class BrickerGameManager extends GameManager {
             deleteObject(this.strikeNumberDisplay, Layer.UI);
             createStrikeNumberDisplay(windowController.getWindowDimensions());
             deleteObject(this.ball);
-            this.setCamera(null);
             createBall(windowController.getWindowDimensions());
+            if(this.cameraActivated){
+                this.setCameraToBall();
+            }
         }
     }
 

@@ -66,7 +66,7 @@ adamflei123, idobb123
     regular ball, and also checks that the camera isn't already set to follow the ball. If both of the
     conditions are met, calls BrickerGameManager's setCameraToBall()
     set camera operates as instructed in 2.2.3 plus it records the number of collisions that the ball
-    had up to that point. To change the camera back to default we use the  setCameraToDefault() function
+    had up to that point. To change the camera back to default we use the setCameraToDefault() function
     (inside of the manager) that checks if the ball has collided 4 more times. If so, changes the camera back
     to default. This function is called inside the overriden update()
 
